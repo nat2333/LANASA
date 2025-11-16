@@ -22,38 +22,38 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/Usuario")
+@RequestMapping("/usuario")
 @CrossOrigin(origins = "http://localhost:4200")
 public class UsuarioRestController {
 	
 	@Autowired
 	private UsuarioServiceAPI service;
 	
-	@PostMapping(value="/crear")
+	@PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioDTO crear(@RequestBody CrearUsuarioRequest req) {
         return service.crear(req);
     }
 	
-	@GetMapping(value="/obtener/{id}")
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
     public UsuarioDTO obtener(@PathVariable Integer id) {
         return service.obtener(id);
     }
 	
-	@GetMapping(value="/getAll")
+	@GetMapping("/getAll")
 	@ResponseStatus(HttpStatus.OK)
 	public List<UsuarioDTO> listar() {
 		return service.listar();
 	}
 
-	@PutMapping("/actualizar/{id}")
+	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public UsuarioDTO actualizar(@PathVariable Integer id, @RequestBody ActualizarUsuarioRequest req) {
 		return service.actualizar(id, req);
 	}
 	
-	@PostMapping(value="/cambiarEstado/{id}")
+	@PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public UsuarioDTO cambiarEstado(@PathVariable Integer id) {
         return service.cambiarEstado(id);

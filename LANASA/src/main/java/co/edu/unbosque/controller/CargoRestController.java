@@ -10,44 +10,44 @@ import co.edu.unbosque.dto.CargoDTOs.*;
 import co.edu.unbosque.service.api.CargoServiceAPI;
 
 @RestController
-@RequestMapping("/Cargo")
+@RequestMapping("/cargo")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CargoRestController {
 
 	@Autowired
 	private  CargoServiceAPI service;
 
-	@PostMapping("/crear")
+	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
 	public CargoDTO crear(@RequestBody CrearCargoRequest req) {
 		return service.crear(req);
 	}
 
-	@GetMapping("/obtener/{id}")
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public CargoDTO obtener(@PathVariable Short id) {
 		return service.obtener(id);
 	}
 
-	@GetMapping("/getAll")
+	@GetMapping()
 	@ResponseStatus(HttpStatus.OK)
 	public List<CargoDTO> listar() {
 		return service.listar();
 	}
 
-	@PutMapping("/actualizar/{id}")
+	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public CargoDTO actualizar(@PathVariable Short id, @RequestBody ActualizarCargoRequest req) {
 		return service.actualizar(id, req);
 	}
 
-	@PostMapping("/cambiarEstado/{id}")
+	@PostMapping("/{id}/estado")
 	@ResponseStatus(HttpStatus.OK)
 	public CargoDTO cambiarEstado(@PathVariable Short id) {
 		return service.cambiarEstado(id);
 	}
 
-	@DeleteMapping("/eliminar/{id}")
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void eliminar(@PathVariable Short id) {
 		service.eliminar(id);

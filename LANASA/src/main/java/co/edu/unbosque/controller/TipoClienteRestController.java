@@ -10,38 +10,38 @@ import co.edu.unbosque.dto.TipoClienteDTOs.*;
 import co.edu.unbosque.service.api.TipoClienteServiceAPI;
 
 @RestController
-@RequestMapping("/TipoCliente")
+@RequestMapping("/tipo-cliente")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TipoClienteRestController {
 
 	@Autowired
 	private TipoClienteServiceAPI service;
 
-    @PostMapping("/crear")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public TipoClienteDTO crear(@RequestBody CrearTipoClienteRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TipoClienteDTO obtener(@PathVariable Short id) {
         return service.obtener(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<TipoClienteDTO> listar() {
         return service.listar();
     }
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public TipoClienteDTO cambiarEstado(@PathVariable Short id) {
         return service.cambiarEstado(id);
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}/eliminar")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminar(@PathVariable Short id) {
         service.eliminar(id);

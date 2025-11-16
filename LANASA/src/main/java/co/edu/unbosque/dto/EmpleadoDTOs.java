@@ -58,6 +58,9 @@ public class EmpleadoDTOs {
 	        LocalDate fechaIngreso,
 	        BigDecimal salario,
 	        boolean estado,
+	        Short idCargo,              
+	        Short idTipoContrato,     
+	        Integer idDepartamento,
 	        String nombreCargo,
 	        String nombreTipoContrato,
 	        String nombreDepartamento

@@ -9,7 +9,7 @@ import jakarta.persistence.*;
  * 
  */
 @Entity
-@Table(name="Estado_Transaccion")
+@Table(name="estado_transaccion")
 public class EstadoTransaccion implements Serializable {
 	private static final long serialVersionUID = 1L;
 

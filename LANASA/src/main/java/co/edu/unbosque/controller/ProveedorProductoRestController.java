@@ -10,43 +10,49 @@ import co.edu.unbosque.dto.ProveedorProductoDTOs.*;
 import co.edu.unbosque.service.api.ProveedorProductoServiceAPI;
 
 @RestController
-@RequestMapping("/ProveedorProducto")
+@RequestMapping("/proveedor-producto")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProveedorProductoRestController {
 
 	@Autowired
 	private ProveedorProductoServiceAPI service;
 	
-	@PostMapping("/crear")
+	@PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ProveedorProductoDTO crear(@RequestBody CrearProveedorProductoRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProveedorProductoDTO obtener(@PathVariable Integer id) {
         return service.obtener(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<ProveedorProductoDTO> listar() {
         return service.listar();
     }
 
-    @PutMapping("/actualizar/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProveedorProductoDTO actualizar(@PathVariable Integer id,@RequestBody ActualizarProveedorProductoRequest req) {
         return service.actualizar(id, req);
     }
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public ProveedorProductoDTO cambiarEstado(@PathVariable Integer id) {
         return service.cambiarEstado(id);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable Integer id) {
+        service.eliminar(id);
+    }
+    
     @GetMapping("/porProducto/{idProducto}")
     @ResponseStatus(HttpStatus.OK)
     public List<ProveedorProductoDTO> porProducto(@PathVariable Integer idProducto) {

@@ -1,13 +1,8 @@
 package co.edu.unbosque.utils;
 
 import co.edu.unbosque.config.JwtProperties;
-import co.edu.unbosque.entity.Cliente;
 import co.edu.unbosque.entity.Empleado;
-import co.edu.unbosque.entity.Usuario;
-import co.edu.unbosque.service.api.ClienteServiceAPI;
 import co.edu.unbosque.service.api.EmpleadoServiceAPI;
-import co.edu.unbosque.service.api.UsuarioServiceAPI;
-import co.edu.unbosque.utils.exception.ResourceNotFoundException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 

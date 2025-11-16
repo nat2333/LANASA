@@ -124,7 +124,8 @@ public class DetalleFacturaVentaServiceImpl extends GenericServiceImpl<DetalleFa
 				d.getCantidad(),
 				d.getPrecioUnitario(),
 				subtotalLinea,
-				d.getTipo()
+				d.getTipo(),
+				d.isEstado()
 		);
 	}
 	

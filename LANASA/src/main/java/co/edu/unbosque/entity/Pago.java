@@ -29,7 +29,7 @@ public class Pago implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)	@JoinColumn(name="id_metodo_pago")
 	private MetodoPago metodoPago;
 
-	@Column(name="presupuesto_anual", nullable=false, precision=12, scale=2)
+	@Column(name="monto", nullable=false, precision=12, scale=2)
 	private BigDecimal monto;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)	@JoinColumn(name="id_factura_compra")

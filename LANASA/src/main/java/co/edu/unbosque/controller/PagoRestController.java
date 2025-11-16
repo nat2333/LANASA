@@ -10,33 +10,33 @@ import co.edu.unbosque.dto.PagoDtos.*;
 import co.edu.unbosque.service.api.PagoServiceAPI;
 
 @RestController
-@RequestMapping("/Pago")
+@RequestMapping("/pagos")
 @CrossOrigin(origins = "http://localhost:4200")
 public class PagoRestController {
 
 	@Autowired
     private PagoServiceAPI service;
 
-    @PostMapping("/crear")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public PagoDTO crear( @RequestBody CrearPagoRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PagoDTO obtener(@PathVariable Integer id) { return service.obtener(id); }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<PagoDTO> listar() { return service.listar(); }
 
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public PagoDTO cambiarEstado(@PathVariable Integer id) { return service.cambiarEstado(id); }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminar(@PathVariable Integer id) { service.eliminar(id); }
 

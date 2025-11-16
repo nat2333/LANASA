@@ -27,22 +27,21 @@ public class PersonaNaturalServiceImpl extends GenericServiceImpl<PersonaNatural
     private ClienteRepository clienteRepo;
 	
 	@Override
-	public PersonaNaturalDTO crear(CrearPersonaNaturalRequest req) {
-		if (repo.existsByCliente_IdCliente(req.idCliente())) {
+    public PersonaNaturalDTO crear(CrearPersonaNaturalRequest req) {
+        if (repo.existsByCliente_IdCliente(req.idCliente())) {
             throw new IllegalStateException("El Cliente id=" + req.idCliente() + " ya tiene PersonaNatural");
         }
 
-        Cliente cli = getClienteRequired(req.idCliente());
+        Cliente cliente = obtenerCliente(req.idCliente());
 
-        String ced = req.cedula().trim();
+        String ced = req.cedula() != null ? req.cedula().trim() : "";
         if (!ced.isEmpty() && repo.existsByCedula(ced)) {
-        	throw new IllegalArgumentException("La cédula ya existe: " + ced);
+            throw new IllegalArgumentException("La cédula ya existe: " + ced);
         }
 
         PersonaNatural pn = new PersonaNatural();
-        pn.setCliente(cli);              
-        pn.setIdCliente(cli.getIdCliente());
-        pn.setCedula(req.cedula() != null ? req.cedula().trim() : null);
+        pn.setCliente(cliente); 
+        pn.setCedula(ced.isEmpty() ? null : ced);
         pn.setPrimerNombre(req.primerNombre());
         pn.setSegundoNombre(req.segundoNombre());
         pn.setPrimerApellido(req.primerApellido());
@@ -50,13 +49,12 @@ public class PersonaNaturalServiceImpl extends GenericServiceImpl<PersonaNatural
         pn.setEstado(true);
 
         return toDTO(repo.save(pn));
-	}
+    }
 	
 	@Override
 	@Transactional(readOnly = true)
 	public PersonaNaturalDTO obtener(Integer idCliente) {
-		PersonaNatural pn = repo.findById(idCliente)
-	            .orElseThrow(() -> new ResourceNotFoundException("No existe PersonaNatural para idCliente=" + idCliente));
+		PersonaNatural pn = obtenerPersona(idCliente);
 	        return toDTO(pn);
 	}
 	
@@ -68,10 +66,7 @@ public class PersonaNaturalServiceImpl extends GenericServiceImpl<PersonaNatural
 	
 	@Override
 	public PersonaNaturalDTO actualizar(Integer idCliente, ActualizarPersonaNaturalRequest req) {
-		PersonaNatural pn = repo.findById(idCliente)
-				.orElseThrow(() -> new ResourceNotFoundException("No existe PersonaNatural para idCliente=" + idCliente));
-
-
+		PersonaNatural pn = obtenerPersona(idCliente);
 
 		pn.setPrimerNombre(req.primerNombre());
 		pn.setSegundoNombre(req.segundoNombre());
@@ -100,7 +95,6 @@ public class PersonaNaturalServiceImpl extends GenericServiceImpl<PersonaNatural
 	}
 	
 	private PersonaNaturalDTO toDTO(PersonaNatural p) {
-        Cliente cli = p.getCliente();
         return new PersonaNaturalDTO(
             p.getIdCliente(),
             p.getCedula(),
@@ -108,17 +102,22 @@ public class PersonaNaturalServiceImpl extends GenericServiceImpl<PersonaNatural
             p.getSegundoNombre(),
             p.getPrimerApellido(),
             p.getSegundoApellido(),
-            p.getEstado(),
-            cli.getTelefono(),
-            cli.getCorreo(),
-            cli.getTipoCliente().getTipo()
+            p.getEstado()
         );
     }
 	
-	private Cliente getClienteRequired(Integer idCliente) {
+	private Cliente obtenerCliente(Integer idCliente) {
         return clienteRepo.findById(idCliente)
             .orElseThrow(() -> new ResourceNotFoundException("No existe Cliente id=" + idCliente));
     }
 	
+	public PersonaNatural obtenerPersona(Integer idCliente) {
+		return repo.findById(idCliente)
+        .orElseThrow(() -> new ResourceNotFoundException("No existe PersonaNatural para idCliente=" + idCliente));
+	}
+	
+	public PersonaNaturalDTO obtenerPersonaDTO(Integer idCliente) {
+		return toDTO(obtenerPersona(idCliente));
+	}
 	
 }

@@ -10,38 +10,38 @@ import co.edu.unbosque.dto.OrdenCompraDTOs.*;
 import co.edu.unbosque.service.api.OrdenCompraServiceAPI;
 
 @RestController
-@RequestMapping("/OrdenCompra")
+@RequestMapping("/orden-compra")
 @CrossOrigin(origins = "http://localhost:4200")
 public class OrdenCompraRestController {
 
 	@Autowired
 	private OrdenCompraServiceAPI service;
 	
-	@PostMapping("/crear")
+	@PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public OrdenCompraDTO crear( @RequestBody CrearOrdenCompraRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrdenCompraDTO obtener(@PathVariable Integer id) {
         return service.obtener(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<OrdenCompraDTO> listar() {
         return service.listar();
     }
 
-    @PutMapping("/actualizar/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrdenCompraDTO actualizar(@PathVariable Integer id, @RequestBody ActualizarOrdenCompraRequest req) {
         return service.actualizar(id, req);
     }
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public OrdenCompraDTO cambiarEstado(@PathVariable Integer id) {
         return service.cambiarEstado(id);

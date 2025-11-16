@@ -27,6 +27,7 @@ public final class DetalleFacturaVentaDTOs {
         Integer cantidad,
         BigDecimal precioUnitario,
         BigDecimal subtotalLinea,           
-        String tipo
+        String tipo,
+        Boolean estado
     ) {}
 }

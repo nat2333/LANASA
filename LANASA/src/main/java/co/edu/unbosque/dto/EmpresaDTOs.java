@@ -23,9 +23,6 @@ public class EmpresaDTOs {
 	        String nombre,
 	        String rut,
 	        String razonSocial,
-	        Boolean estado,
-	        String telefono,
-	        String correo,
-	        String tipoCliente
+	        Boolean estado
 	    ) {}
 }

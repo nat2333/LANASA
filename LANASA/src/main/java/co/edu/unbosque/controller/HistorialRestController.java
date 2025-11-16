@@ -11,39 +11,39 @@ import co.edu.unbosque.dto.HistorialEmpleadoDTOs.*;
 import co.edu.unbosque.service.api.HistorialServiceAPI;
 
 @RestController
-@RequestMapping("/Historial")
+@RequestMapping("/empleado-historico")
 @CrossOrigin(origins = "http://localhost:4200")
 public class HistorialRestController {
 
 	@Autowired
 	private  HistorialServiceAPI service;
 	
-	 @PostMapping("/crear")
+	 @PostMapping()
 	    @ResponseStatus(HttpStatus.CREATED)
 	    public HistorialDTO crear( @RequestBody CrearHistorialRequest req) {
 	        return service.crear(req);
 	    }
 
-	    @GetMapping("/obtener/{id}")
+	    @GetMapping("/{id}")
 	    @ResponseStatus(HttpStatus.OK)
 	    public HistorialDTO obtener(@PathVariable Integer id) {
 	        return service.obtener(id);
 	    }
 
-	    @GetMapping("/getAll")
+	    @GetMapping()
 	    @ResponseStatus(HttpStatus.OK)
 	    public List<HistorialDTO> listar() {
 	        return service.listar();
 	    }
 
-	    @PutMapping("/actualizar/{id}")
+	    @PutMapping("/{id}")
 	    @ResponseStatus(HttpStatus.OK)
 	    public HistorialDTO actualizar(@PathVariable Integer id,
 	                                    @RequestBody ActualizarHistorialRequest req) {
 	        return service.actualizar(id, req);
 	    }
 
-	    @PostMapping("/cerrar/{id}")
+	    @PostMapping("/{id}/cerrar")
 	    @ResponseStatus(HttpStatus.OK)
 	    public HistorialDTO cerrar(@PathVariable Integer id,
 	                               @RequestParam(required = false) LocalDate fechaFin) {
@@ -56,7 +56,7 @@ public class HistorialRestController {
 	        return service.listarPorEmpleado(idEmpleado);
 	    }
 
-	    @DeleteMapping("/eliminar/{id}")
+	    @DeleteMapping("/{id}")
 	    @ResponseStatus(HttpStatus.NO_CONTENT)
 	    public void eliminar(@PathVariable Integer id) {
 	        service.eliminar(id);

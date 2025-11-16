@@ -10,7 +10,7 @@ import jakarta.persistence.*;
  * 
  */
 @Entity
-@Table(name="Historial")
+@Table(name="historial")
 public class Historial implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -20,34 +20,34 @@ import co.edu.unbosque.dto.ProyectoDtos.*;
 import co.edu.unbosque.service.api.ProyectoServiceAPI;
 
 @RestController
-@RequestMapping("/Proyecto")
+@RequestMapping("/proyectos")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ProyectoRestController {
 
 	@Autowired 
 	private ProyectoServiceAPI service;
 	
-	@PostMapping("/crear")
+	@PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ProyectoDTO crear(@RequestBody CrearProyectoRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProyectoDTO obtener(@PathVariable Integer id) { return service.obtener(id); }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<ProyectoDTO> listar() { return service.listar(); }
 
-    @PutMapping("/actualizar/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProyectoDTO actualizar(@PathVariable Integer id, @RequestBody ActualizarProyectoRequest req) {
         return service.actualizar(id, req);
     }
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public ProyectoDTO cambiarEstado(@PathVariable Integer id) { return service.cambiarEstado(id); }
 

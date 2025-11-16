@@ -21,4 +21,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     @Override
     @EntityGraph(attributePaths = { "tipoCliente" })
     List<Cliente> findAll();
+    
+    @EntityGraph(attributePaths = { "tipoCliente" })
+    List<Cliente> findByTipoCliente_IdTipoCliente(Short idTipoCliente);
 }

@@ -22,5 +22,5 @@ public class CargoDTOs {
 	public record CrearCargoRequest(
 			@NotBlank @Size(max = 100) String nombreCargo,
 			@NotNull  @DecimalMin(value = "0.00") BigDecimal salario
-			) {}
+			) {};
 }

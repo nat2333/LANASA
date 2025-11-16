@@ -29,10 +29,7 @@ public class PersonaNaturalDTOs {
 	        String segundoNombre,
 	        String primerApellido,
 	        String segundoApellido,
-	        Boolean estado,
-	        String telefono,
-	        String correo,
-	        String tipoCliente
+	        Boolean estado
 	    ) {}
 	
 	

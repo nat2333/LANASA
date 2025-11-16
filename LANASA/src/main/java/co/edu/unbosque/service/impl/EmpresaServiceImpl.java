@@ -28,34 +28,32 @@ public class EmpresaServiceImpl extends GenericServiceImpl<Empresa, Integer> imp
     private ClienteRepository clienteRepo;
 	
 	@Override
-	public EmpresaDTO crear(CrearEmpresaRequest req) {
-		if (repo.existsByCliente_IdCliente(req.idCliente())) {
+    public EmpresaDTO crear(CrearEmpresaRequest req) {
+        if (repo.existsByCliente_IdCliente(req.idCliente())) {
             throw new IllegalStateException("El Cliente id=" + req.idCliente() + " ya tiene Empresa");
         }
 
-		Cliente cli = obtenerEntidad(req.idCliente());
+        Cliente cliente = obtenerEntidad(req.idCliente());
 
-		String rut = req.rut().trim();
-		if (repo.existsByRut(rut)) {
-			throw new IllegalArgumentException("El RUT ya existe: " + rut);
-		}
-		
-		Empresa e = new Empresa();
-		e.setCliente(cli); 
-		e.setIdCliente(cli.getIdCliente());
-		e.setNombre(req.nombre());
-		e.setRut(req.rut().trim());
-		e.setRazonSocial(req.razonSocial());
-		e.setEstado(true);
+        String rut = req.rut() != null ? req.rut().trim() : "";
+        if (!rut.isEmpty() && repo.existsByRut(rut)) {
+            throw new IllegalArgumentException("El RUT ya existe: " + rut);
+        }
 
-		return toDTO(repo.save(e));
-	}
+        Empresa e = new Empresa();
+        e.setCliente(cliente);  
+        e.setNombre(req.nombre());
+        e.setRut(rut.isEmpty() ? null : rut);
+        e.setRazonSocial(req.razonSocial());
+        e.setEstado(true);
+
+        return toDTO(repo.save(e));
+    }
 	
 	@Override
 	@Transactional(readOnly = true)
 	public EmpresaDTO obtener(Integer idCliente) {
-		Empresa e = repo.findById(idCliente)
-				.orElseThrow(() -> new ResourceNotFoundException("No existe Empresa para idCliente=" + idCliente));
+		Empresa e = obtenerEmpresa(idCliente);
 		return toDTO(e);
 	}
 	
@@ -67,8 +65,7 @@ public class EmpresaServiceImpl extends GenericServiceImpl<Empresa, Integer> imp
 	
 	@Override
 	public EmpresaDTO actualizar(Integer idCliente, ActualizarEmpresaRequest req) {
-		Empresa e = repo.findById(idCliente)
-				.orElseThrow(() -> new ResourceNotFoundException("No existe Empresa para idCliente=" + idCliente));
+		Empresa e = obtenerEmpresa(idCliente);
 
 		e.setNombre(req.nombre());
 		e.setRazonSocial(req.razonSocial());
@@ -95,16 +92,12 @@ public class EmpresaServiceImpl extends GenericServiceImpl<Empresa, Integer> imp
 	}
 
 	private EmpresaDTO toDTO(Empresa e) {
-		var cli = e.getCliente();
 		return new EmpresaDTO(
 				e.getIdCliente(),
 				e.getNombre(),
 				e.getRut(),
 				e.getRazonSocial(),
-				e.getEstado(),
-				cli.getTelefono(),
-				cli.getCorreo(),
-				cli.getTipoCliente().getTipo()
+				e.getEstado()
 				);
 	}
 	
@@ -112,4 +105,13 @@ public class EmpresaServiceImpl extends GenericServiceImpl<Empresa, Integer> imp
         return clienteRepo.findById(idCliente)
             .orElseThrow(() -> new ResourceNotFoundException("No existe Cliente id=" + idCliente));
     }
+	
+	public Empresa obtenerEmpresa(Integer idCliente) {
+		return repo.findById(idCliente)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe Empresa para idCliente=" + idCliente));
+	}
+	
+	public EmpresaDTO obtenerEmpresaDTO(Integer idCliente) {
+		return toDTO(obtenerEmpresa(idCliente));
+	}
 }

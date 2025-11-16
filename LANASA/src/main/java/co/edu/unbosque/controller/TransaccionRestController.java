@@ -11,7 +11,7 @@ import co.edu.unbosque.dto.TransaccionDTOs.*;
 import co.edu.unbosque.service.api.TransaccionServiceAPI;
 
 @RestController
-@RequestMapping("/Transaccion")
+@RequestMapping("/transacciones")
 @CrossOrigin(origins = "http://localhost:4200")
 public class TransaccionRestController {
 
@@ -21,19 +21,19 @@ public class TransaccionRestController {
         this.service = service;
     }
 
-    @PostMapping("/crear")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public TransaccionDTO crear(@Validated @RequestBody CrearTransaccionRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TransaccionDTO obtener(@PathVariable Integer id) {
         return service.obtener(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<TransaccionDTO> listar() {
         return service.listar();
@@ -53,20 +53,20 @@ public class TransaccionRestController {
         return service.listarEntreFechas(desde, hasta);
     }
 
-    @PutMapping("/actualizar/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TransaccionDTO actualizar(@PathVariable Integer id,
                                      @Validated @RequestBody ActualizarTransaccionRequest req) {
         return service.actualizar(id, req);
     }
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public TransaccionDTO cambiarEstado(@PathVariable Integer id) {
         return service.cambiarEstado(id);
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminar(@PathVariable Integer id) {
         service.eliminar(id);

@@ -10,44 +10,44 @@ import co.edu.unbosque.dto.EstadoFacturaDtos.*;
 import co.edu.unbosque.service.api.EstadoFacturaServiceAPI;
 
 @RestController
-@RequestMapping("/EstadoFactura")
+@RequestMapping("/estado-factura")
 @CrossOrigin(origins = "http://localhost:4200")
 public class EstadoFacturaRestController {
 
 	@Autowired
     private EstadoFacturaServiceAPI service;
 
-    @PostMapping("/crear")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public EstadoFacturaDTO crear(@RequestBody CrearEstadoFacturaRequest req) {
         return service.crear(req);
     }
 
-    @GetMapping("/obtener/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EstadoFacturaDTO obtener(@PathVariable Short id) {
         return service.obtener(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<EstadoFacturaDTO> listar() {
         return service.listar();
     }
 
-    @PutMapping("/actualizar/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EstadoFacturaDTO actualizar(@PathVariable Short id, @RequestBody ActualizarEstadoFacturaRequest req) {
         return service.actualizar(id, req);
     }
 
-    @PostMapping("/cambiarEstado/{id}")
+    @PostMapping("/{id}/estado")
     @ResponseStatus(HttpStatus.OK)
     public EstadoFacturaDTO cambiarEstado(@PathVariable Short id) {
         return service.cambiarEstado(id);
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminar(@PathVariable Short id) {
         service.eliminar(id);

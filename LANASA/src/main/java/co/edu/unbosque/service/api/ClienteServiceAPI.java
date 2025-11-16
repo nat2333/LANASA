@@ -11,6 +11,8 @@ public interface ClienteServiceAPI {
 	ClienteDTO obtener(Integer id);
     
 	List<ClienteDTO> listar();
+	
+	List<ClienteDTO> listarPorTipo(Short idTipoCliente); 
     
 	ClienteDTO actualizar(Integer id, ActualizarClienteRequest req);
     

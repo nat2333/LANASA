@@ -128,9 +128,12 @@ public class EmpleadoServiceImpl extends GenericServiceImpl<Empleado, Integer> i
 				e.getFechaIngreso(),
 				e.getSalario(),
 				e.getEstado(),
-				e.getCargo() != null ? e.getCargo().getNombreCargo() : null,
-						e.getTipoContrato() != null ? e.getTipoContrato().getNombreTipocontrato() : null,
-								e.getDepartamento() != null ? e.getDepartamento().getNombre() : null
+				e.getCargo().getIdCargo(),
+				e.getTipoContrato().getIdTipoContrato(),
+				e.getDepartamento().getIdDepartamento(),
+				e.getCargo().getNombreCargo(),
+			    e.getTipoContrato().getNombreTipocontrato(),
+				e.getDepartamento().getNombre()
 				);
 	}
 
