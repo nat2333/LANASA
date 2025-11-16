@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
 import co.edu.unbosque.dto.LoginRequest;
+import co.edu.unbosque.dto.UsuarioDTOs.UsuarioDTO;
 import co.edu.unbosque.entity.Usuario;
-import co.edu.unbosque.service.impl.UsuarioServiceImpl;
+import co.edu.unbosque.service.api.UsuarioServiceAPI;
 import co.edu.unbosque.utils.HashGenerator;
 import co.edu.unbosque.utils.JwtUtils;
 import co.edu.unbosque.utils.exception.AuthenticationFailureException;
@@ -27,17 +28,17 @@ import java.util.Map;
 public class AutenticacionRestController {
 
 	@Autowired
-	private UsuarioServiceImpl usuarioService;
+	private UsuarioServiceAPI usuarioService;
 	@Autowired
 	private JwtUtils jwtUtils;
 	
 	
-	/*@PostMapping("/login")
+	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 		
-		Usuario usuario = autenticar(loginRequest.getUsername(), loginRequest.getPassword());
+		UsuarioDTO usuario = autenticar(loginRequest.getUsername(), loginRequest.getPassword());
 		
-		String token = jwtUtils.generateToken(usuario.getLogin());
+		String token = jwtUtils.generateToken(usuario.login());
 		Map<String, Object> response = new HashMap<>();
 		response.put("usuario", usuario);
 		response.put("token", token);
@@ -57,14 +58,14 @@ public class AutenticacionRestController {
         return ResponseEntity.ok(esValido);
     }
 	
-	/
-	private Usuario autenticar(String correo, String clavePlano) {
-        Usuario usuario =  usuarioService.findByLoginUsuario(correo)
-        	    .orElseThrow(() -> new  AuthenticationFailureException("Correo o contraseña inválidos"));
+	
+	private UsuarioDTO autenticar(String correo, String clavePlano) {
+        Usuario u =  usuarioService.findByLogin(correo);
         
-        if(!HashGenerator.generarHash(clavePlano).equals(usuario.getClave()))
+        if(!HashGenerator.generarHash(clavePlano).equals(u.getClave()))
         	 throw new AuthenticationFailureException("Correo o contraseña inválidos");
-        return usuario;
-    }*/
+        
+        return new UsuarioDTO(u.getIdUsuario(), u.getLogin(), u.getEstado(), u.getTipoUsuario().getTipo());
+    }
 
 }

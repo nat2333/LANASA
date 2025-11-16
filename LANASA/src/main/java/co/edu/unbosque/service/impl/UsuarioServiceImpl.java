@@ -98,5 +98,10 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Integer> imp
 	private UsuarioDTO toDTO(Usuario u) {
         return new UsuarioDTO(u.getIdUsuario(), u.getLogin(), u.getEstado(), u.getTipoUsuario().getTipo());
     }
+
+	@Override
+	public Usuario findByLogin(String login) {
+		return rep.findByLogin(login).orElseThrow(() -> new ResourceNotFoundException("Usuario no existe: " + login));
+	}
 	
 }
