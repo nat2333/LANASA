@@ -52,4 +52,11 @@ public class EmpleadoRestController {
     public void eliminar(@PathVariable Integer id) {
         service.eliminar(id);
     }
+    
+    @GetMapping("/departamento/{idDept}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EmpleadoDTO> listarPorDepartamento(@PathVariable Integer idDept) {
+        return service.listarPorDepartamento(idDept);
+    }
+
 }

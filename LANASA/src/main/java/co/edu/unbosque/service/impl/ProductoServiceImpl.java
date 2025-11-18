@@ -1,6 +1,7 @@
 package co.edu.unbosque.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unbosque.dto.CategoriaUtilidadDTO;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionUtilidadCategoria;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionUtilidadProducto;
 import co.edu.unbosque.dto.ProductoDTOs.*;
+import co.edu.unbosque.dto.ProductoUtilidadDTO;
 import co.edu.unbosque.entity.Producto;
 import co.edu.unbosque.repository.ProductoRepository;
 import co.edu.unbosque.service.api.ProductoServiceAPI;
@@ -98,7 +103,55 @@ public class ProductoServiceImpl extends GenericServiceImpl<Producto, Integer> i
         return repo.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("No existe Producto id=" + id));
     }
+
+	@Override
+	public List<ProductoUtilidadDTO> obtenerUtilidadProductos() {
+		List<ProyeccionUtilidadProducto> proyecciones = repo.obtenerUtilidadProductos();
+		List<ProductoUtilidadDTO> dtos = new ArrayList<>();
+		
+		for(ProyeccionUtilidadProducto p : proyecciones) {
+			dtos.add(toProductoUtilidadDTO(p));
+		}
+		return dtos;
+	}
+
+	@Override
+	public List<CategoriaUtilidadDTO> obtenerUtilidadCategoria() {
+		List<ProyeccionUtilidadCategoria> proyecciones = repo.obtenerUtilidadCategoria();
+		List<CategoriaUtilidadDTO> dtos = new ArrayList<>();
+		
+		for(ProyeccionUtilidadCategoria p : proyecciones) {
+			dtos.add(toCategoriaUtilidadDTO(p));
+		}
+		return dtos;
+	}
 	
+	private ProductoUtilidadDTO toProductoUtilidadDTO(ProyeccionUtilidadProducto p) {
+		return new ProductoUtilidadDTO(
+                p.getSku(),
+                p.getNombre(),
+                p.getCategoria(),
+                p.getPrecioCompra(),
+                p.getPrecioVentaSugerido(),
+                p.getPrecioVentaPromedio(),
+                p.getUtilidadReal(),
+                p.getUtilidadRealPorcentaje(),
+                p.getUtilidadPotencial(),
+                p.getUtilidadPotencialPorcentaje()
+        );
+	}
 	
+	private CategoriaUtilidadDTO toCategoriaUtilidadDTO(ProyeccionUtilidadCategoria p) {
+		return new CategoriaUtilidadDTO(
+				p.getCategoria(),
+				p.getCantidadProductos(),
+				p.getPrecioCompraPromedio(),
+				p.getPrecioVentaSugeridoPromedio(),
+				p.getUtilidadPromedio(),
+				p.getUtilidadPorcentajePromedio()
+				);
+	}
+	
+
 
 }

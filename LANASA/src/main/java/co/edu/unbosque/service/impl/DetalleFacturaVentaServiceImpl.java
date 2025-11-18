@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.unbosque.dto.DetalleFacturaVentaDTOs.*;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionProductoMasVendido;
+import co.edu.unbosque.dto.ProductoMasVendidoDTO;
 import co.edu.unbosque.entity.*;
 import co.edu.unbosque.repository.*;
 import co.edu.unbosque.service.api.DetalleFacturaVentaServiceAPI;
@@ -147,5 +149,20 @@ public class DetalleFacturaVentaServiceImpl extends GenericServiceImpl<DetalleFa
         f.setSubtotal(nuevoSubtotal);
         f.setTotal(f.getSubtotal().add(f.getImpuestos()));
         facRepo.save(f);
+    }
+	
+	@Override
+    public List<ProductoMasVendidoDTO> obtenerProductosMasVendidos() {
+        List<ProyeccionProductoMasVendido> proyecciones = repo.obtenerProductosMasVendidos();
+
+        return proyecciones.stream()
+                .limit(5)
+                .map(p -> new ProductoMasVendidoDTO(
+                        p.getNombreProducto(),
+                        p.getCategoria(),
+                        p.getCantidadVendida(),
+                        p.getTotalVendido()
+                ))
+                .toList();
     }
 }

@@ -108,7 +108,7 @@ public class OrdenCompraServiceImpl extends GenericServiceImpl<OrdenCompra, Inte
                 oc.getFechaOrden(),
                 oc.getFechaEntregaEsperada(),
                 oc.getFechaEntregaReal(),
-                oc.getIdProyecto(),
+                (oc.getIdProyecto() == null) ? 0 : oc.getIdProyecto() ,
                 prov.getNombreComercial(),
                 est.getEstadoCompra(),
                 oc.getEstado()

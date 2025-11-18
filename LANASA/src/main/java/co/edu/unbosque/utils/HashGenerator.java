@@ -7,7 +7,7 @@ public class HashGenerator {
 
 	public static String generarHash(String input) {
 		try {
-			// Crear una instancia de MessageDigest con el algoritmo SHA-256
+			// Crear una instancia de MessageDigest con el algoritmo SHA
 			MessageDigest digest = MessageDigest.getInstance("SHA-1");
 
 			// Calcular el hash del input

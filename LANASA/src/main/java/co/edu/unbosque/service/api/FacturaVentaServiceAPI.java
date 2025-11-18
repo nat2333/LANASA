@@ -2,7 +2,9 @@ package co.edu.unbosque.service.api;
 
 import java.util.List;
 
+import co.edu.unbosque.dto.ClienteTopVentasDTO;
 import co.edu.unbosque.dto.FacturaVentaDTOs.*;
+import co.edu.unbosque.dto.VentasMensualesDTO;
 
 public interface FacturaVentaServiceAPI {
 
@@ -21,4 +23,8 @@ public interface FacturaVentaServiceAPI {
 	List<FacturaVentaDTO> porCliente(Integer idCliente);
 	
     List<FacturaVentaDTO> porProyecto(Integer idProyecto);
+    
+    List<VentasMensualesDTO> obtenerVentasMensuales();
+
+    List<ClienteTopVentasDTO> obtenerTopClientes();
 }

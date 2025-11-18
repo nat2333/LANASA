@@ -24,5 +24,8 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Integer> {
     @Override
     @EntityGraph(attributePaths = { "cargo", "tipoContrato", "departamento" })
     List<Empleado> findAll();
+    
+    
+    List<Empleado> findByDepartamento_IdDepartamento(Integer idDepartamento);
 	
 }

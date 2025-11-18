@@ -33,7 +33,7 @@ public class OrdenCompra implements Serializable {
 	private LocalDate fechaOrden;
 
 	@Column(name="id_proyecto")
-	private int idProyecto;
+	private Integer idProyecto;
 
     @Column(name = "numero", nullable = false, unique = true, length = 40)
 	private String numero;
@@ -89,11 +89,11 @@ public class OrdenCompra implements Serializable {
 		this.fechaOrden = fechaOrden;
 	}
 
-	public int getIdProyecto() {
+	public Integer getIdProyecto() {
 		return this.idProyecto;
 	}
 
-	public void setIdProyecto(int idProyecto) {
+	public void setIdProyecto(Integer idProyecto) {
 		this.idProyecto = idProyecto;
 	}
 

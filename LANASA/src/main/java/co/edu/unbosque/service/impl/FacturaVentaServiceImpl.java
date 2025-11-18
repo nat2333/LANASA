@@ -9,7 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unbosque.dto.ClienteTopVentasDTO;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionTopCliente;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionVentasMensuales;
 import co.edu.unbosque.dto.FacturaVentaDTOs.*;
+import co.edu.unbosque.dto.VentasMensualesDTO;
 import co.edu.unbosque.entity.Cliente;
 import co.edu.unbosque.entity.EstadoFactura;
 import co.edu.unbosque.entity.FacturaVenta;
@@ -146,6 +150,37 @@ public class FacturaVentaServiceImpl extends GenericServiceImpl<FacturaVenta, In
     public List<FacturaVentaDTO> porProyecto(Integer idProyecto) {
         return repo.findByProyecto_IdProyecto(idProyecto).stream().map(this::toDTO).collect(Collectors.toList());
     }
+
+	@Override
+	public List<VentasMensualesDTO> obtenerVentasMensuales() {
+		List<ProyeccionVentasMensuales> proyecciones =repo.obtenerVentasMensuales();
+
+        return proyecciones.stream()
+                .map(p -> new VentasMensualesDTO(
+                        p.getAnio(),
+                        p.getMes(),
+                        p.getTotalVentas(),
+                        p.getNumeroFacturas()
+                ))
+                .toList();
+	}
+
+	@Override
+	public List<ClienteTopVentasDTO> obtenerTopClientes() {
+		 List<ProyeccionTopCliente> proyecciones = repo.obtenerTopClientes();
+
+	        return proyecciones.stream()
+	                .limit(5)
+	                .map(p -> new ClienteTopVentasDTO(
+	                        p.getCorreo(),
+	                        p.getTelefono(),
+	                        p.getPais(),
+	                        p.getCiudad(),
+	                        p.getTotalComprado(),
+	                        p.getNumeroFacturas()
+	                ))
+	                .toList();
+	}
 	
 	
 }

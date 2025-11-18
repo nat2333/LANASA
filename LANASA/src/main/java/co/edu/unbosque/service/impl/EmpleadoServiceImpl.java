@@ -156,6 +156,15 @@ public class EmpleadoServiceImpl extends GenericServiceImpl<Empleado, Integer> i
 	public Empleado findByCorreo(String correo) {
 		return repo.findByCorreo(correo).orElseThrow(() -> new ResourceNotFoundException("No existe Empleado correo=" + correo));
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<EmpleadoDTO> listarPorDepartamento(Integer idDepartamento) {
+	    return repo.findByDepartamento_IdDepartamento(idDepartamento)
+	               .stream()
+	               .map(this::toDTO)
+	               .collect(Collectors.toList());
+	}
 
 
 }

@@ -1,6 +1,7 @@
 package co.edu.unbosque.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.unbosque.dto.DepartamentoDTOs.*;
+import co.edu.unbosque.dto.DepartamentoEstadisticasDTO;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionDepartamentoEstadistica;
 import co.edu.unbosque.entity.Departamento;
 import co.edu.unbosque.repository.DepartamentoRepository;
 import co.edu.unbosque.service.api.DepartamentoServiceAPI;
@@ -79,6 +82,19 @@ public class DepartamentoServiceImpl extends GenericServiceImpl<Departamento, In
 		return rep;
 	}
 	
+	@Override
+    public List<DepartamentoEstadisticasDTO> obtenerNomina() {
+		
+		List<DepartamentoEstadisticasDTO> dtos = new ArrayList<>();
+        List<ProyeccionDepartamentoEstadistica> proyecciones = rep.obtenerEstadisticasDepartamentos();
+        
+        for(ProyeccionDepartamentoEstadistica p : proyecciones) {
+        	dtos.add(toDTOEstadisticas(p));
+        }
+        
+        return dtos;
+    }
+	
 	private DepartamentoDTO toDTO(Departamento d) {
 		return new DepartamentoDTO(d.getIdDepartamento(), d.getNombre(),d.getCodigo(), d.getFechaCreacion(),
 	            d.getPresupuestoAnual(),d.getEstado());
@@ -86,6 +102,17 @@ public class DepartamentoServiceImpl extends GenericServiceImpl<Departamento, In
 	
 	private Departamento obtenerEntidad(int id) {
 		return rep.findById(id).orElseThrow(() -> new ResourceNotFoundException("No existe Departamento con ID=" + id));
+	}
+	
+	private DepartamentoEstadisticasDTO toDTOEstadisticas(ProyeccionDepartamentoEstadistica p) {
+		return new DepartamentoEstadisticasDTO(
+                p.getNombreDepartamento(),
+                p.getCodigo(),
+                p.getCantidadEmpleados(),
+                p.getNominaTotal(),
+                p.getPresupuestoAnual(),
+                p.getDiferencia()
+        );
 	}
 
 }

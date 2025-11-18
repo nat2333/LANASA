@@ -8,9 +8,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionProyectoEstadoDepartamento;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionProyectoPorCliente;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionProyectoPorDepartamento;
+import co.edu.unbosque.dto.EstadisticasProyecciones.ProyeccionProyectosPresupuesto;
 import co.edu.unbosque.dto.ProyectoDtos.ActualizarProyectoRequest;
 import co.edu.unbosque.dto.ProyectoDtos.CrearProyectoRequest;
 import co.edu.unbosque.dto.ProyectoDtos.ProyectoDTO;
+import co.edu.unbosque.dto.ProyectoEstadoDepartamentoDTO;
+import co.edu.unbosque.dto.ProyectoPorClienteDTO;
+import co.edu.unbosque.dto.ProyectoPorDepartamentoDTO;
+import co.edu.unbosque.dto.ProyectoPresupuestoDTO;
 import co.edu.unbosque.entity.Cliente;
 import co.edu.unbosque.entity.Departamento;
 import co.edu.unbosque.entity.Proyecto;
@@ -99,31 +107,6 @@ public class ProyectoServiceImpl extends GenericServiceImpl<Proyecto, Integer> i
 		return toDTO(repo.save(p));
 	}
 
-	/*
-	@Override
-	public List<ProyectoDTO> listarActivos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ProyectoDTO> porDepartamento(Integer idDepartamento) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ProyectoDTO> porCliente(Integer idCliente) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ProyectoDTO> porTipoProyecto(Short idTipoProyecto) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
-
 	@Override
 	public JpaRepository<Proyecto, Integer> getDao() {
 		return repo;
@@ -156,5 +139,81 @@ public class ProyectoServiceImpl extends GenericServiceImpl<Proyecto, Integer> i
             tip.getTipoProyecto()
         );
     }
+
+	@Override
+	public List<ProyectoPresupuestoDTO> obtenerPresupuestos() {
+		List<ProyeccionProyectosPresupuesto> proyecciones = repo.obtenerPresupuestos();
+
+        return proyecciones.stream()
+                .map(p -> new ProyectoPresupuestoDTO(
+                        p.getIdProyecto(),
+                        p.getCodigo(),
+                        p.getNombreProyecto(),
+                        p.getNombreDepartamento(),
+                        p.getCorreoCliente(),
+                        p.getTipoProyecto(),
+                        p.getPresupuestoAprobado(),
+                        p.getPresupuestoUtilizado(),
+                        p.getSaldoPresupuesto(),
+                        p.getPorcentajeUtilizado(),
+                        p.getSobrepasa() == 1
+                ))
+                .toList();
+	}
+
+	@Override
+	public List<ProyectoPorDepartamentoDTO> obtenerProyectosPorDepartamento() {
+		 List<ProyeccionProyectoPorDepartamento> proyecciones = repo.obtenerProyectosPorDepartamento();
+
+	        return proyecciones.stream()
+	                .map(p -> new ProyectoPorDepartamentoDTO(
+	                        p.getIdDepartamento(),
+	                        p.getNombreDepartamento(),
+	                        p.getNumeroProyectos(),
+	                        p.getPresupuestoTotalAprobado(),
+	                        p.getPresupuestoTotalUtilizado()
+	                ))
+	                .toList();
+	}
+
+	@Override
+	public List<ProyectoPorClienteDTO> obtenerProyectosPorCliente() {
+		List<ProyeccionProyectoPorCliente> proyecciones = repo.obtenerProyectosPorCliente();
+
+        return proyecciones.stream()
+                .limit(5)
+                .map(p -> new ProyectoPorClienteDTO(
+                        p.getIdCliente(),
+                        p.getCorreoCliente(),
+                        p.getPais(),
+                        p.getCiudad(),
+                        p.getNumeroProyectos(),
+                        p.getPresupuestoTotalAprobado(),
+                        p.getPresupuestoTotalUtilizado()
+                ))
+                .toList();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ProyectoEstadoDepartamentoDTO> obtenerEstadoProyectosPorDepartamento(Integer idDepartamento) {
+		List<ProyeccionProyectoEstadoDepartamento> proyecciones =
+                repo.obtenerEstadoProyectosPorDepartamento(idDepartamento);
+
+        return proyecciones.stream()
+                .map(p -> new ProyectoEstadoDepartamentoDTO(
+                        p.getIdProyecto(),
+                        p.getCodigo(),
+                        p.getNombreProyecto(),
+                        p.getNombreDepartamento(),
+                        p.getPresupuestoAprobado(),
+                        p.getPresupuestoUtilizado(),
+                        p.getDiferenciaPresupuesto(),
+                        p.getEstadoPresupuesto(),
+                        p.getEstadoEntrega(),
+                        p.getDiasRetraso()
+                ))
+                .toList();
+	}
 	
 }

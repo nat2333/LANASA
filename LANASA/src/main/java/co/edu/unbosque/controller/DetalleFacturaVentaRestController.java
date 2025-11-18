@@ -31,7 +31,8 @@ public class DetalleFacturaVentaRestController {
         return service.obtener(id);
     }
 
-    @GetMapping()
+    
+    @GetMapping("/factura/{idFacturaVenta}")
     @ResponseStatus(HttpStatus.OK)
     public List<DetalleFacturaVentaDTO> listarPorFactura(@PathVariable Integer idFacturaVenta) {
         return service.listarPorFactura(idFacturaVenta);

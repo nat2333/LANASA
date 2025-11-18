@@ -20,4 +20,7 @@ public interface EmpleadoServiceAPI {
 	EmpleadoDTO cambiarEstado(Integer id);
 	
 	Empleado findByCorreo(String correo);
+	
+	List<EmpleadoDTO> listarPorDepartamento(Integer idDepartamento);
+
 }
