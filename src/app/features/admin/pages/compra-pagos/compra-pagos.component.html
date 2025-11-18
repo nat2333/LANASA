@@ -1,0 +1,185 @@
+<div class="compra-pagos-page">
+  <h1>Pagos de compras</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar pago' : 'Nuevo pago' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <!-- FACTURA -->
+        <div class="form-field">
+          <label for="idFacturaCompra">Factura de compra *</label>
+          <select
+            id="idFacturaCompra"
+            formControlName="idFacturaCompra"
+          >
+            <option [ngValue]="null" disabled>Seleccione una factura</option>
+            <option
+              *ngFor="let f of facturas"
+              [ngValue]="f.idFacturaCompra"
+              [disabled]="!f.estado"
+            >
+              {{ f.numero }} — {{ f.montoTotal | number:'1.2-2' }}
+            </option>
+          </select>
+          <small *ngIf="hasError('idFacturaCompra','required')" class="form-error">
+            La factura es obligatoria.
+          </small>
+        </div>
+
+        <!-- MÉTODO DE PAGO -->
+        <div class="form-field">
+          <label for="idMetodoPago">Método de pago *</label>
+          <select
+            id="idMetodoPago"
+            formControlName="idMetodoPago"
+          >
+            <option [ngValue]="null" disabled>Seleccione un método</option>
+            <option
+              *ngFor="let m of metodosPago"
+              [ngValue]="m.id"
+              [disabled]="!m.estado"
+            >
+              {{ m.metodoPago }}
+            </option>
+          </select>
+          <small *ngIf="hasError('idMetodoPago','required')" class="form-error">
+            El método de pago es obligatorio.
+          </small>
+        </div>
+
+        <!-- FECHA PAGO -->
+        <div class="form-field">
+          <label for="fechaPago">Fecha de pago *</label>
+          <input
+            id="fechaPago"
+            type="date"
+            formControlName="fechaPago"
+          />
+          <small *ngIf="hasError('fechaPago','required')" class="form-error">
+            La fecha de pago es obligatoria.
+          </small>
+        </div>
+
+        <!-- MONTO -->
+        <div class="form-field">
+          <label for="monto">Monto *</label>
+          <input
+            id="monto"
+            type="number"
+            step="0.01"
+            min="0.01"
+            formControlName="monto"
+          />
+          <small *ngIf="hasError('monto','required')" class="form-error">
+            El monto es obligatorio.
+          </small>
+          <small *ngIf="hasError('monto','min')" class="form-error">
+            El monto debe ser mayor que 0.
+          </small>
+        </div>
+      </div>
+
+      <!-- Info de la factura seleccionada -->
+      <div class="factura-info" *ngIf="facturaSeleccionada">
+        <p>
+          Factura seleccionada:
+          <strong>{{ facturaSeleccionada.numero }}</strong> ·
+          Fecha:
+          <strong>{{ facturaSeleccionada.fechaFactura | date:'yyyy-MM-dd' }}</strong> ·
+          Monto total:
+          <strong>{{ facturaSeleccionada.montoTotal | number:'1.2-2' }}</strong>
+        </p>
+      </div>
+
+      <!-- Errores globales de validación cruzada -->
+      <div class="form-global-errors" *ngIf="form.touched && form.invalid">
+        <small
+          *ngIf="form.hasError('fechaPagoAntesFactura')"
+          class="form-error"
+        >
+          La fecha de pago no puede ser anterior a la fecha de la factura seleccionada.
+        </small>
+
+        <small
+          *ngIf="form.hasError('montoMayorFactura')"
+          class="form-error"
+        >
+          El monto del pago no puede ser mayor al monto total de la factura seleccionada.
+        </small>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          *ngIf="editMode"
+          type="button"
+          class="secondary"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de pagos</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && pagos.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Número factura</th>
+            <th>Método pago</th>
+            <th>Fecha pago</th>
+            <th>Monto</th>
+            <th>Estado</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of pagos">
+            <td>{{ p.idPago }}</td>
+            <td>{{ p.numeroFactura }}</td>
+            <td>{{ p.nombreMetodoPago }}</td>
+            <td>{{ p.fechaPago }}</td>
+            <td class="num">{{ p.monto | number:'1.2-2' }}</td>
+            <td>
+              <span
+                [class.badge-active]="p.estado"
+                [class.badge-inactive]="!p.estado"
+              >
+                {{ p.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="actions">
+                <button type="button" (click)="editPago(p)">Editar</button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="toggleEstado(p)"
+                >
+                  {{ p.estado ? 'Desactivar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && pagos.length === 0">
+      No hay pagos registrados.
+    </p>
+  </section>
+</div>

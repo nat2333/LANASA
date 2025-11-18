@@ -1,0 +1,158 @@
+<h2>Lista de empleados</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  <div class="row">
+    <label>Cédula*</label>
+    <input formControlName="cedula" placeholder="Documento" />
+  </div>
+
+  <div class="row">
+    <label>Primer nombre*</label>
+    <input formControlName="primerNombre" />
+  </div>
+
+  <div class="row">
+    <label>Segundo nombre</label>
+    <input formControlName="segundoNombre" />
+  </div>
+
+  <div class="row">
+    <label>Primer apellido*</label>
+    <input formControlName="primerApellido" />
+  </div>
+
+  <div class="row">
+    <label>Segundo apellido</label>
+    <input formControlName="segundoApellido" />
+  </div>
+
+  <div class="row">
+    <label>Correo*</label>
+    <input formControlName="correo" type="email" />
+  </div>
+
+  <div class="row">
+    <label>Fecha de nacimiento*</label>
+    <input formControlName="fechaNacimiento" type="date" />
+  </div>
+
+  <div class="row">
+    <label>Dirección</label>
+    <input formControlName="direccion" />
+  </div>
+
+  <div class="row">
+    <label>Ciudad</label>
+    <input formControlName="ciudad" />
+  </div>
+
+  <div class="row">
+    <label>País</label>
+    <input formControlName="pais" />
+  </div>
+
+  <div class="row">
+    <label>Salario*</label>
+    <input formControlName="salario" type="number" step="0.01" />
+  </div>
+
+  <div class="row">
+        <label for="idCargo">Cargo*</label>
+        <select id="idCargo" formControlName="idCargo">
+          <option [value]=''disabled>Seleccione un cargo</option>
+          <option *ngFor="let cargo of cargos" [value]="cargo.id">
+            {{ cargo.nombreCargo }}
+          </option>
+        </select>
+        <span *ngIf="form.get('idCargo')?.invalid && form.get('idCargo')?.touched" class="error-msg">
+          Debe seleccionar un cargo
+        </span>
+    </div>
+
+  <div class="row">
+        <label for="idTipoContrato">Tipo de Contrato*</label>
+        <select id="idTipoContrato" formControlName="idTipoContrato">
+          <option [value]='' disabled>Seleccione un tipo de contrato</option>
+          <option *ngFor="let tc of tiposContrato" [value]="tc.id">
+            {{ tc.nombreTipocontrato }}
+          </option>
+        </select>
+        <span *ngIf="form.get('idTipoContrato')?.invalid && form.get('idTipoContrato')?.touched" class="error-msg">
+          Debe seleccionar un tipo de contrato
+        </span>
+      </div>
+
+  <div class="row">
+        <label for="idDepartamento">Departamento*</label>
+        <select id="idDepartamento" formControlName="idDepartamento">
+          <option [value]='' disabled>Seleccione un departamento</option>
+          <option *ngFor="let dep of departamentos" [value]="dep.id">
+            {{ dep.nombre }}
+          </option>
+        </select>
+        <span *ngIf="form.get('idDepartamento')?.invalid && form.get('idDepartamento')?.touched" class="error-msg">
+          Debe seleccionar un departamento
+        </span>
+    </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && empleados.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Cédula</th>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Dirección</th>
+      <th>Fecha ingreso</th>
+      <th>Salario</th>
+      <th>Cargo</th>
+      <th>Tipo contrato</th>
+      <th>Departamento</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of empleados">
+      <td>{{ e.id }}</td>
+      <td>{{ e.cedula }}</td>
+      <td>
+        {{ e.primerNombre }} {{ e.segundoNombre }} {{ e.primerApellido }}
+        {{ e.segundoApellido }}
+      </td>
+      <td>{{ e.correo }}</td>
+      <td>
+        {{e.direccion}} {{e.ciudad}} {{e.pais}}
+      </td>
+      <td>{{ e.fechaIngreso | date:'yyyy-MM-dd' }}</td>
+      <td>{{ e.salario | number:'1.2-2' }}</td>
+      <td>{{ e.nombreCargo }}</td>
+      <td>{{ e.nombreTipoContrato }}</td>
+      <td>{{ e.nombreDepartamento }}</td>
+      <td>{{ e.estado ? 'Activo' : 'Inactivo' }}</td>
+      <td class="right">
+        <button (click)="edit(e)">Editar</button>
+        <button (click)="toggleEstado(e)" [disabled]="loading">
+            {{ e.estado ? 'Desactivar' : 'Activar' }}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !empleados.length" class="muted">
+  Sin registros.
+</div>

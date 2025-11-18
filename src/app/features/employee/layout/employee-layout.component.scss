@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 16px;
+}
+
+/* botón peligro usando tu paleta */
+button.danger {
+  background: linear-gradient(90deg, #f5576c, #f093fb);
+}

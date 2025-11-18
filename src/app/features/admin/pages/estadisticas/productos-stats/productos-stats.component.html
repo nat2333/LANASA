@@ -1,0 +1,105 @@
+<div class="prod-dashboard">
+  <header class="prod-header">
+    <h2>Estadísticas de productos</h2>
+    <p>Utilidad real, márgenes y distribución por categorías</p>
+  </header>
+
+  <div *ngIf="loading" class="loading">Cargando…</div>
+
+  <section *ngIf="!loading" class="grid">
+    <!-- Top utilidad real -->
+    <article class="card tall">
+      <header class="card-header">
+        <h3>Top utilidad real</h3>
+        <p>Productos con mayor utilidad generada</p>
+      </header>
+      <div class="card-inner">
+        <canvas #topUtilidadRealChart></canvas>
+      </div>
+    </article>
+
+    <!-- Márgenes real vs potencial -->
+    <article class="card tall">
+      <header class="card-header">
+        <h3>Márgenes real vs. potencial</h3>
+        <p>Comparación de rentabilidad por producto</p>
+      </header>
+      <div class="card-inner">
+        <canvas #margenRealPotChart></canvas>
+      </div>
+    </article>
+
+    <!-- Distribución por categoría -->
+    <article class="card">
+      <header class="card-header">
+        <h3>Distribución por categoría</h3>
+      </header>
+      <div class="card-inner">
+        <canvas #categoriasChart></canvas>
+      </div>
+    </article>
+
+    <!-- Tabla resumen -->
+    <article class="card table-card">
+      <header class="card-header">
+        <h3>Resumen de productos</h3>
+        <p>Top 20 productos por actividad reciente</p>
+      </header>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th class="num">Compra</th>
+              <th class="num">Venta prom.</th>
+              <th class="num">Utilidad real</th>
+              <th class="num">% margen real</th>
+              <th class="num">% margen potencial</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of productos.slice(0,20)">
+              <td class="sku-cell">{{ p.sku }}</td>
+              <td class="prod-name">{{ p.nombre }}</td>
+              <td class="cat-cell">{{ p.categoria }}</td>
+
+              <td class="num">
+                {{ money(p.precioCompra) }}
+              </td>
+
+              <td class="num">
+                {{ money(p.precioVentaPromedio) }}
+              </td>
+
+              <td class="num">
+                <span
+                  class="chip"
+                  [class.chip-pos]="p.utilidadReal >= 0"
+                  [class.chip-neg]="p.utilidadReal < 0">
+                  {{ money(p.utilidadReal) }}
+                </span>
+              </td>
+
+              <td class="num">
+                <span
+                  class="chip chip-soft"
+                  [class.chip-neg]="p.utilidadRealPorcentaje < 0">
+                  {{ pct(p.utilidadRealPorcentaje) }}
+                </span>
+              </td>
+
+              <td class="num">
+                <span class="chip chip-soft">
+                  {{ pct(p.utilidadmPotencialPorcentaje) }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+</div>

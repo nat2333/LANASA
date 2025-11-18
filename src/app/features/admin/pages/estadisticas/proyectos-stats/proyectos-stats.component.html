@@ -1,0 +1,62 @@
+<div class="proj-dashboard">
+  <h2>Estadísticas de Proyectos</h2>
+
+  <div *ngIf="loading" class="loading">Cargando…</div>
+
+  <section *ngIf="!loading" class="grid">
+    <!-- Presupuesto por proyecto -->
+    <div class="card tall">
+      <canvas #presupuestoChart></canvas>
+    </div>
+
+    <!-- Proyectos por departamento -->
+    <div class="card tall">
+      <canvas #porDeptoChart></canvas>
+    </div>
+
+    <!-- Top clientes -->
+    <div class="card">
+      <canvas #porClienteChart></canvas>
+    </div>
+
+    <div class="card table-card">
+      <h3>Resumen de proyectos </h3>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Proyecto</th>
+              <th>Depto.</th>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th class="num">Aprobado</th>
+              <th class="num">Utilizado</th>
+              <th class="num">Saldo</th>
+              <th class="num">% Utilizado</th>
+              <th>Bandera</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of topPresupuestos()">
+              <td>{{ p.codigo }}</td>
+              <td>{{ p.nombreProyecto }}</td>
+              <td>{{ p.nombreDepartamento }}</td>
+              <td>{{ p.correoCliente }}</td>
+              <td>{{ p.tipoProyecto }}</td>
+              <td class="num">{{ money(p.presupuestoAprobado) }}</td>
+              <td class="num">{{ money(p.presupuestoUtilizado) }}</td>
+              <td class="num">{{ money(p.saldoPresupuesto) }}</td>
+              <td class="num">{{ pct(p.porcentajeUtilizado) }}</td>
+              <td>
+                <span class="flag" [class.flag--warn]="p.sobrepasa">
+                  {{ p.sobrepasa ? 'Sobrepasa' : 'OK' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>

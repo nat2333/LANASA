@@ -1,0 +1,46 @@
+<h2>{{ title }}</h2>
+
+<!-- FORMULARIO -->
+<form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()" class="card">
+
+  <div class="row" *ngFor="let col of columns">
+    <label>{{ col }}</label>
+
+    <!-- El binding correcto: [formControlName]="col" -->
+    <input [formControlName]="col" />
+  </div>
+
+  <div class="actions">
+    <button type="submit">{{ editMode ? 'Actualizar' : 'Crear' }}</button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">Cancelar</button>
+  </div>
+</form>
+
+<!-- ESTADOS -->
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<!-- TABLA -->
+<table class="tbl" *ngIf="rows.length > 0 && !loading">
+  <thead>
+    <tr>
+      <th *ngFor="let col of columns">{{ col }}</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let r of rows">
+      <td *ngFor="let col of columns">{{ r[col] }}</td>
+      <td class="right">
+        <button (click)="edit(r)">Editar</button>
+        <button (click)="remove(r)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- VACÍO -->
+<div *ngIf="!rows.length && !loading" class="muted">
+  Sin registros.
+</div>

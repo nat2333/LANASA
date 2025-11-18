@@ -1,0 +1,61 @@
+<div class="dept-dashboard">
+  <h2>Estadísticas de Departamentos</h2>
+
+  <section class="card table-card">
+    <header class="table-header">
+      <div>
+        <h3>Resumen por departamento</h3>
+        <p>Nómina vs. presupuesto anual y porcentaje de uso</p>
+      </div>
+    </header>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Depto</th>
+            <th>Empleados</th>
+            <th>Nómina</th>
+            <th>Presupuesto</th>
+            <th>Diferencia</th>
+            <th>% Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of data">
+            <td class="dept-cell">{{ d.codigo }}</td>
+
+            <td class="num">
+              {{ d.cantidadEmpleados | number }}
+            </td>
+
+            <td class="num">
+              {{ d.nominaTotal | number:'1.0-0' }}
+            </td>
+
+            <td class="num">
+              {{ d.presupuestoAnual | number:'1.0-0' }}
+            </td>
+
+            <td class="num">
+              <span
+                class="chip"
+                [class.chip-pos]="d.diferencia >= 0"
+                [class.chip-neg]="d.diferencia < 0">
+                {{ d.diferencia | number:'1.0-0' }}
+              </span>
+            </td>
+
+            <td class="num">
+              <span
+                class="chip chip-soft"
+                [class.chip-neg]="d.diferencia < 0">
+                {{ pct(d.nominaTotal, d.presupuestoAnual) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,92 @@
+<div class="metodos-pago-page">
+  <h1>Métodos de pago</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar método' : 'Nuevo método de pago' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field full">
+          <label for="metodoPago">Nombre del método *</label>
+          <input id="metodoPago" type="text" formControlName="metodoPago" />
+          <small
+            *ngIf="hasError('metodoPago','required')"
+            class="form-error"
+          >
+            Este campo es obligatorio.
+          </small>
+          <small
+            *ngIf="hasError('metodoPago','maxlength')"
+            class="form-error"
+          >
+            Máximo 50 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          *ngIf="editMode"
+          type="button"
+          class="secondary"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de métodos</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <table *ngIf="!loading && metodos.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Método</th>
+          <th>Activo</th>
+          <th class="actions-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of metodos">
+          <td>{{ m.id }}</td>
+          <td>{{ m.metodoPago }}</td>
+          <td>
+            <span
+              [class.badge-active]="m.estado"
+              [class.badge-inactive]="!m.estado"
+            >
+              {{ m.estado ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="actions-col">
+            <div class="actions">
+              <button type="button" (click)="editMetodo(m)">Editar</button>
+              <button
+                type="button"
+                class="danger"
+                (click)="toggleEstado(m)"
+              >
+                {{ m.estado ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p *ngIf="!loading && metodos.length === 0">
+      No hay métodos de pago registrados.
+    </p>
+  </section>
+</div>

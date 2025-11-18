@@ -1,1 +1,194 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===== PALETA GLOBAL ===== */
+:root {
+  --violeta:   #8550f7;
+  --violeta2:  #af72fc;
+  --violeta3:  #9f40fc;
+  --lila:      #b9a7f9;
+  --blanco:    #ffffff;
+  --gris-osc:  #130827;
+  --gris-card: #1e1235;
+}
+
+/* ===== RESETEO BÁSICO ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  color: var(--blanco);
+  background: radial-gradient(circle at top, #1c0f3a, #050110 70%);
+}
+
+body {
+  padding: 16px;
+}
+
+/* Links */
+a {
+  color: var(--violeta2);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+/* ===== LAYOUT DE FORMULARIOS (LO DEL FORM 😏) ===== */
+/* Cualquier <form class="card"> se verá centrado y bonito */
+form.card {
+  max-width: 560px;
+  margin: 40px auto;
+  display: block;
+}
+
+/* Títulos dentro de forms */
+form.card h2,
+form.card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* ===== TARJETAS ===== */
+.card {
+  background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(20, 10, 40, 0.9)
+    );
+  border-radius: 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(14px);
+}
+
+/* Inputs */
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+
+  label {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  input,
+  select,
+  textarea {
+    border-radius: 999px;
+    border: 1px solid rgba(185, 167, 249, 0.5);
+    padding: 8px 12px;
+    background: rgba(10, 4, 30, 0.9);
+    color: var(--blanco);
+    outline: none;
+    font-size: 0.9rem;
+
+    &:focus {
+      border-color: var(--violeta2);
+      box-shadow: 0 0 0 1px rgba(133, 80, 247, 0.5);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.55);
+    }
+  }
+}
+
+/* Botones */
+button {
+  border-radius: 999px;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--violeta), var(--violeta2));
+  color: #fff;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, opacity 0.15s;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ===== TABLAS ===== */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 0.86rem;
+  background: rgba(15, 7, 35, 0.95);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+
+  thead {
+    background: linear-gradient(90deg, var(--violeta3), var(--violeta2));
+  }
+
+  th,
+  td {
+    padding: 10px 12px;
+  }
+
+  th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  tbody tr:hover {
+    background: rgba(133, 80, 247, 0.22);
+  }
+
+  .right {
+    text-align: right;
+    white-space: nowrap;
+  }
+}
+
+/* Errores */
+.error {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 82, 82, 0.15);
+  border: 1px solid rgba(255, 138, 138, 0.6);
+  font-size: 0.8rem;
+}
+
+.muted {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.65);
+}

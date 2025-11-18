@@ -1,0 +1,70 @@
+<h2>Tipo de proyecto</h2>
+
+<form [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="card">
+
+  <div class="row">
+    <label>Nombre del tipo de proyecto*</label>
+    <input
+      formControlName="tipoProyecto"
+      placeholder="Ej: Desarrollo de software" />
+  </div>
+
+  <div class="row">
+    <label>Estado</label>
+    <select formControlName="estado">
+      <option [ngValue]="true">Activo</option>
+      <option [ngValue]="false">Inactivo</option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button type="submit"
+            [disabled]="form.invalid || saving">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button"
+            (click)="cancel()"
+            *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && tipos.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tipo de proyecto</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let t of tipos">
+      <td>{{ t.idTipoProyecto }}</td>
+      <td>{{ t.tipoProyecto }}</td>
+      <td>{{ t.estado ? 'Activo' : 'Inactivo' }}</td>
+      <td class="right">
+        <button type="button" (click)="edit(t)">
+          Editar
+        </button>
+        <button type="button"
+                class="danger"
+                (click)="desactivar(t)"
+                [disabled]="deleting">
+          Desactivar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !tipos.length" class="muted">
+  Sin registros.
+</div>

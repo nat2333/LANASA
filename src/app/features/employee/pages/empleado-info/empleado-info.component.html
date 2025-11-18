@@ -1,0 +1,59 @@
+<div class="empleado-info">
+
+  <section class="card header">
+    <div class="header-top">
+      <h2>Empleados del departamento</h2>
+      <span class="count" *ngIf="empleados.length">
+        {{ empleados.length }} empleado{{ empleados.length === 1 ? '' : 's' }}
+      </span>
+    </div>
+  </section>
+
+  <!-- Loading / error -->
+  <div *ngIf="loading" class="state state-loading">
+    Cargando empleados…
+  </div>
+
+  <div *ngIf="!loading && error" class="state state-error">
+    {{ error }}
+  </div>
+
+  <!-- Tabla -->
+  <section class="card" *ngIf="!loading && !error">
+    <table class="empleados-table" *ngIf="empleados.length; else sinResultados">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Departamento</th>
+          <th>Cargo</th>
+          <th>Correo</th>
+          <th>Ciudad</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of empleados">
+          <td>{{ fullName(e) }}</td>
+          <td>{{ e.nombreDepartamento }}</td>
+          <td>{{ e.nombreCargo || '—' }}</td>
+          <td>{{ e.correo || '—' }}</td>
+          <td>{{ e.ciudad || '—' }}</td>
+          <td>
+            <span
+              class="badge"
+              [class.badge--ok]="e.estado"
+              [class.badge--off]="e.estado === false">
+              {{ e.estado ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #sinResultados>
+      <div class="state">
+        No hay empleados para este departamento.
+      </div>
+    </ng-template>
+  </section>
+</div>

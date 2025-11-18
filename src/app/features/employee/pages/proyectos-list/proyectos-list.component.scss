@@ -1,0 +1,97 @@
+.proyectos-depto {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.header-top h2 {
+  margin: 0;
+  font-size: clamp(20px, 2.2vw, 26px);
+}
+
+.header .count {
+  font-size: .9rem;
+  opacity: .8;
+}
+
+.state {
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.state-loading {
+  background: rgba(99, 102, 241, .08);
+  border: 1px dashed rgba(99, 102, 241, .35);
+}
+
+.state-error {
+  background: rgba(239, 68, 68, .08);
+  border: 1px dashed rgba(239, 68, 68, .35);
+}
+
+.proyectos-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+
+.proyectos-table thead th {
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, .15);
+  white-space: nowrap;
+}
+
+.proyectos-table tbody td {
+  padding: 6px 4px;
+  border-bottom: 1px dashed rgba(255, 255, 255, .08);
+  vertical-align: top;
+}
+
+.proyecto-nombre {
+  font-weight: 500;
+}
+
+.proyecto-depto {
+  font-size: .8rem;
+  opacity: .8;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .8rem;
+  border: 1px solid rgba(255, 255, 255, .15);
+}
+
+.badge--ok {
+  background: rgba(16, 185, 129, .15);
+  border-color: rgba(16, 185, 129, .35);
+}
+
+.badge--warn {
+  background: rgba(245, 158, 11, .15);
+  border-color: rgba(245, 158, 11, .35);
+}
+
+.badge--off {
+  background: rgba(239, 68, 68, .15);
+  border-color: rgba(239, 68, 68, .35);
+}
+
+.negativo {
+  color: #f97373;
+}

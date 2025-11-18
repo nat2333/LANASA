@@ -1,0 +1,155 @@
+<div class="venta-detalle-page">
+  <h1>Detalle de ventas</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar detalle' : 'Nuevo detalle de venta' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="idFacturaVenta">ID factura venta *</label>
+          <input
+            id="idFacturaVenta"
+            type="number"
+            formControlName="idFacturaVenta"
+          />
+          <small *ngIf="hasError('idFacturaVenta','required')" class="form-error">
+            La factura es obligatoria.
+          </small>
+          <small *ngIf="hasError('idFacturaVenta','min')" class="form-error">
+            Debe ser un ID válido mayor que 0.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="idProducto">ID producto *</label>
+          <input id="idProducto" type="number" formControlName="idProducto" />
+          <small *ngIf="hasError('idProducto','required')" class="form-error">
+            El producto es obligatorio.
+          </small>
+          <small *ngIf="hasError('idProducto','min')" class="form-error">
+            Debe ser un ID válido mayor que 0.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="cantidad">Cantidad *</label>
+          <input id="cantidad" type="number" formControlName="cantidad" />
+          <small *ngIf="hasError('cantidad','min')" class="form-error">
+            La cantidad debe ser al menos 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="precioUnitario">Precio unitario *</label>
+          <input
+            id="precioUnitario"
+            type="number"
+            step="0.01"
+            formControlName="precioUnitario"
+          />
+          <small *ngIf="hasError('precioUnitario','min')" class="form-error">
+            El precio debe ser mayor que 0.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="tipo">Tipo línea</label>
+          <input id="tipo" type="text" formControlName="tipo" />
+          <small *ngIf="hasError('tipo','maxLength')" class="form-error">
+            Máximo 20 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="secondary"
+          (click)="loadDetallesPorFactura()"
+          [disabled]="loading || !form.get('idFacturaVenta')?.value"
+        >
+          Buscar por factura
+        </button>
+
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          *ngIf="editMode"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de detalles</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && detalles.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID detalle</th>
+            <th>Factura</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Subtotal línea</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of detalles">
+            <td>{{ d.idDetalleFacturaVenta }}</td>
+            <td>{{ d.idFacturaVenta }}</td>
+            <td>{{ d.skuProducto }} - {{ d.nombreProducto }}</td>
+            <td class="num">{{ d.cantidad }}</td>
+            <td class="num">{{ d.precioUnitario | number:'1.2-2' }}</td>
+            <td class="num">{{ d.subtotalLinea | number:'1.2-2' }}</td>
+            <td>{{ d.tipo }}</td>
+            <td>
+              <span
+                [class.badge-active]="d.estado"
+                [class.badge-inactive]="!d.estado"
+              >
+                {{ d.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="actions">
+                <button type="button" (click)="editDetalle(d)">Editar</button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="toggleEstado(d)"
+                >
+                  {{ d.estado ? 'Desactivar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && detalles.length === 0 && form.get('idFacturaVenta')?.value">
+      No hay detalles de venta registrados para esta factura.
+    </p>
+    <p *ngIf="!loading && !form.get('idFacturaVenta')?.value">
+      Ingrese un ID de factura y presione "Buscar por factura".
+    </p>
+  </section>
+</div>

@@ -1,0 +1,93 @@
+<div class="estado-factura-page">
+  <h1>Estados de factura</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar estado' : 'Nuevo estado de factura' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field full">
+          <label for="nombre">Nombre *</label>
+          <input id="nombre" type="text" formControlName="nombre" />
+
+          <small
+            *ngIf="hasError('nombre','required')"
+            class="form-error"
+          >
+            Este campo es obligatorio.
+          </small>
+          <small
+            *ngIf="hasError('nombre','maxlength')"
+            class="form-error"
+          >
+            Máximo 40 caracteres.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          *ngIf="editMode"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de estados</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <table *ngIf="!loading && estados.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Activo</th>
+          <th class="actions-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of estados">
+          <td>{{ e.idEstadoFactura }}</td>
+          <td>{{ e.nombre }}</td>
+          <td>
+            <span
+              [class.badge-active]="e.estado"
+              [class.badge-inactive]="!e.estado"
+            >
+              {{ e.estado ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="actions-col">
+            <div class="actions">
+              <button type="button" (click)="editEstado(e)">Editar</button>
+              <button
+                type="button"
+                class="danger"
+                (click)="toggleEstado(e)"
+              >
+                {{ e.estado ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+
+      <p *ngIf="!loading && estados.length === 0">
+        No hay estados registrados.
+      </p>
+  </section>
+</div>

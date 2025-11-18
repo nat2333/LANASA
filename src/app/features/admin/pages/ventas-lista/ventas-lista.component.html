@@ -1,0 +1,162 @@
+<div class="ventas-lista-page">
+  <h1>Ventas</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar venta' : 'Nueva venta' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="idCliente">ID cliente *</label>
+          <input id="idCliente" type="number" formControlName="idCliente" />
+          <small *ngIf="hasError('idCliente','required')" class="form-error">
+            El cliente es obligatorio.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="idProyecto">ID proyecto</label>
+          <input id="idProyecto" type="number" formControlName="idProyecto" />
+        </div>
+
+        <div class="form-field">
+          <label for="idEstadoFactura">Estado factura *</label>
+          <select
+            id="idEstadoFactura"
+            formControlName="idEstadoFactura"
+          >
+            <option [ngValue]="null" disabled>Seleccione un estado</option>
+            <option
+              *ngFor="let e of estadosFactura"
+              [ngValue]="e.idEstadoFactura"
+              [disabled]="!e.estado"
+            >
+              {{ e.nombre }}
+            </option>
+          </select>
+          <small *ngIf="hasError('idEstadoFactura','required')" class="form-error">
+            El estado es obligatorio.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="fechaFacturaVenta">Fecha factura *</label>
+          <input
+            id="fechaFacturaVenta"
+            type="datetime-local"
+            formControlName="fechaFacturaVenta"
+          />
+          <small *ngIf="hasError('fechaFacturaVenta','required')" class="form-error">
+            La fecha es obligatoria.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="subtotal">Subtotal *</label>
+          <input
+            id="subtotal"
+            type="number"
+            step="0.01"
+            formControlName="subtotal"
+          />
+          <small *ngIf="hasError('subtotal','min')" class="form-error">
+            El subtotal no puede ser negativo.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="impuestos">Impuestos *</label>
+          <input
+            id="impuestos"
+            type="number"
+            step="0.01"
+            formControlName="impuestos"
+          />
+          <small *ngIf="hasError('impuestos','min')" class="form-error">
+            Los impuestos no pueden ser negativos.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          *ngIf="editMode"
+          type="button"
+          class="secondary"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de ventas</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && ventas.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Número</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Correo</th>
+            <th>Proyecto</th>
+            <th>Estado factura</th>
+            <th>Subtotal</th>
+            <th>Impuestos</th>
+            <th>Total</th>
+            <th>Activo</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of ventas">
+            <td>{{ v.numero }}</td>
+            <td>{{ v.fechaFacturaVenta }}</td>
+            <td>{{ v.idCliente }}</td>
+            <td>{{ v.correoCliente }}</td>
+            <td>{{ v.codigoProyecto }}</td>
+            <td>{{ v.nombreEstadoFactura }}</td>
+            <td class="num">{{ v.subtotal   | number:'1.2-2' }}</td>
+            <td class="num">{{ v.impuestos | number:'1.2-2' }}</td>
+            <td class="num">{{ v.total      | number:'1.2-2' }}</td>
+            <td>
+              <span
+                [class.badge-active]="v.estado"
+                [class.badge-inactive]="!v.estado"
+              >
+                {{ v.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="actions">
+                <button type="button" (click)="editVenta(v)">Editar</button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="toggleEstado(v)"
+                >
+                  {{ v.estado ? 'Desactivar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && ventas.length === 0">
+      No hay ventas registradas.
+    </p>
+  </section>
+</div>

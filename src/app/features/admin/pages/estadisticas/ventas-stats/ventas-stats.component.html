@@ -1,0 +1,68 @@
+<div class="ventas-dashboard">
+  <h2>Estadísticas de Ventas</h2>
+  <div *ngIf="loading" class="loading">Cargando…</div>
+
+  <section class="grid">
+    <div class="card tall">
+      <canvas #ventasMensualesChart></canvas>
+    </div>
+
+    <div class="card small">
+      <canvas #topClientesChart></canvas>
+    </div>
+
+    <div class="card small">
+      <canvas #productosChart></canvas>
+    </div>
+  </section>
+
+  <!-- Tablas con scroll horizontal -->
+  <section class="grid grid-full">
+    <div class="card table-card">
+      <h3>Top clientes</h3>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Correo</th><th>Teléfono</th><th>País</th><th>Ciudad</th>
+              <th class="num"># Facturas</th><th class="num">Total comprado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of topClientes">
+              <td>{{ c.correo }}</td>
+              <td>{{ c.telefono }}</td>
+              <td>{{ c.pais }}</td>
+              <td>{{ c.ciudad }}</td>
+              <td class="num">{{ c.numeroFacturas | number:'1.0-0' }}</td>
+              <td class="num">{{ money(c.totalComprado) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <h3>Productos más vendidos</h3>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th><th>Categoría</th>
+              <th class="num">Cantidad</th>
+              <th class="num">Total vendido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of productos">
+              <td>{{ p.nombreProducto }}</td>
+              <td>{{ p.categoria }}</td>
+              <td class="num">{{ p.cantidadVendida | number:'1.0-0' }}</td>
+              <td class="num">{{ money(p.totalVendido) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>

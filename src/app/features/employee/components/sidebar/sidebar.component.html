@@ -1,0 +1,30 @@
+<nav class="sidebar">
+  <!-- Inicio -->
+  <a
+    class="sidebar-link"
+    routerLink="/employee/info"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">
+    Inicio
+  </a>
+
+  <!-- Proyectos -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('proyectos')">
+      <span>Proyectos</span>
+      <span class="chevron" [class.open]="openSection === 'proyectos'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'proyectos'">
+      <li>
+        <a
+          class="sidebar-link"
+          routerLink="/employee/proyectos/lista"
+          routerLinkActive="active">
+          Lista de proyectos
+        </a>
+      </li>
+    
+    </ul>
+  </div>
+</nav>

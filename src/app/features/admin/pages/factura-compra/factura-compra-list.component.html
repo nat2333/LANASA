@@ -1,0 +1,179 @@
+<div class="factura-compra-page">
+
+  <!-- Encabezado -->
+  <section class="card header">
+    <div class="header-top">
+      <h1>Facturas de compra</h1>
+      <span class="count" *ngIf="facturas.length">
+        {{ facturas.length }} factura{{ facturas.length === 1 ? '' : 's' }}
+      </span>
+    </div>
+    <p class="subtitle">
+      {{ editMode ? 'Actualizar estado de factura' : 'Registrar nueva factura de compra' }}
+    </p>
+  </section>
+
+  <!-- Formulario -->
+  <section class="card form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="form-grid">
+        <!-- Orden de compra -->
+        <div class="form-field">
+          <label for="orden">Orden de compra *</label>
+          <select
+            id="orden"
+            formControlName="idOrdenCompra"
+          >
+            <option [ngValue]="null" disabled>Seleccione una orden</option>
+            <option
+              *ngFor="let o of ordenes"
+              [ngValue]="o.idOrdenCompra"
+              [disabled]="!o.estado"
+            >
+              {{ o.numero }} — {{ o.nombreComercialProveedor }} — {{ o.fechaOrden | date:'yyyy-MM-dd' }}
+            </option>
+          </select>
+
+          <small
+            *ngIf="!editMode
+                   && form.get('idOrdenCompra')?.touched
+                   && form.get('idOrdenCompra')?.invalid"
+          >
+            La orden de compra es obligatoria.
+          </small>
+        </div>
+
+        <!-- Monto total -->
+        <div class="form-field">
+          <label for="monto">Monto total *</label>
+          <input
+            id="monto"
+            type="number"
+            step="0.01"
+            formControlName="montoTotal"
+          />
+          <small
+            *ngIf="form.get('montoTotal')?.touched
+                   && form.get('montoTotal')?.invalid"
+          >
+            El monto debe ser mayor que 0.
+          </small>
+        </div>
+
+        <!-- Estado factura -->
+        <div class="form-field">
+          <label for="estadoFactura">Estado factura *</label>
+          <select
+            id="estadoFactura"
+            formControlName="idEstadoFactura"
+          >
+            <option [ngValue]="null" disabled>Seleccione un estado</option>
+            <option
+              *ngFor="let e of estadosFactura"
+              [ngValue]="e.idEstadoFactura"
+              [disabled]="!e.estado"
+            >
+              {{ e.nombre}}
+            </option>
+          </select>
+          <small
+            *ngIf="form.get('idEstadoFactura')?.touched
+                   && form.get('idEstadoFactura')?.invalid"
+          >
+            El estado de la factura es obligatorio.
+          </small>
+        </div>
+      </div>
+
+      <!-- Info de la orden seleccionada -->
+      <div class="orden-info" *ngIf="ordenSeleccionada">
+        <p>
+          Orden:
+          <strong>{{ ordenSeleccionada.numero }}</strong> ·
+          Proveedor:
+          <strong>{{ ordenSeleccionada.nombreComercialProveedor }}</strong> ·
+          Fecha:
+          <strong>{{ ordenSeleccionada.fechaOrden | date:'yyyy-MM-dd' }}</strong>
+        </p>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="saving">
+          {{ editMode ? 'Actualizar estado' : 'Crear factura' }}
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          *ngIf="editMode"
+          (click)="resetForm()">
+          Cancelar edición
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Loading / error -->
+  <div *ngIf="loading" class="state state-loading">
+    Cargando facturas de compra…
+  </div>
+
+  <div *ngIf="!loading && error" class="state state-error">
+    {{ error }}
+  </div>
+
+  <!-- Tabla -->
+  <section class="card table-card" *ngIf="!loading && !error">
+    <table class="facturas-table" *ngIf="facturas.length; else sinFacturas">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Fecha</th>
+          <th>Número orden</th>
+          <th>Monto total</th>
+          <th>Estado factura</th>
+          <th>Activo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let f of facturas; trackBy: trackById">
+          <td>{{ f.numero }}</td>
+          <td>{{ f.fechaFactura | date:'yyyy-MM-dd HH:mm' }}</td>
+          <td>{{ f.numeroOrden }}</td>
+          <td class="num">{{ f.montoTotal | number:'1.2-2' }}</td>
+          <td>{{ f.nombreEstadoFactura }}</td>
+          <td>
+            <span
+              class="badge"
+              [class.badge--ok]="f.estado"
+              [class.badge--off]="!f.estado">
+              {{ f.estado ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button type="button" (click)="onEdit(f)">
+              Editar estado
+            </button>
+            <button type="button" (click)="onToggleEstado(f)">
+              Cambiar activo
+            </button>
+            <button
+              type="button"
+              class="danger"
+              (click)="onDelete(f)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #sinFacturas>
+      <div class="state">
+        No hay facturas de compra registradas.
+      </div>
+    </ng-template>
+  </section>
+</div>

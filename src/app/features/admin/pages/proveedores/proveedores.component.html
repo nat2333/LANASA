@@ -1,0 +1,170 @@
+<div class="proveedores-page">
+  <h1>Proveedores</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar proveedor' : 'Nuevo proveedor' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="rut">RUT *</label>
+          <input id="rut" type="text" formControlName="rut" />
+          <small *ngIf="hasError('rut', 'required')">RUT es obligatorio.</small>
+          <small *ngIf="hasError('rut', 'pattern')" class="form-error">
+            RUT solo puede contener letras, números y . - _ /.
+           </small>
+        </div>
+
+        <div class="form-field">
+          <label for="nombreComercial">Nombre comercial *</label>
+          <input
+            id="nombreComercial"
+            type="text"
+            formControlName="nombreComercial"
+          />
+          <small *ngIf="hasError('nombreComercial', 'required')">
+            El nombre comercial es obligatorio.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" type="text" formControlName="telefono" />
+          <small *ngIf="hasError('telefono', 'pattern')" class="form-error">
+            Solo se permiten números, espacios, +, - y paréntesis.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="correo">Correo</label>
+          <input id="correo" type="email" formControlName="correo" />
+          <small *ngIf="hasError('correo', 'email')">
+            Correo no válido.
+          </small>
+        </div>
+
+        <div class="form-field full">
+          <label for="direccion">Dirección</label>
+          <input id="direccion" type="text" formControlName="direccion" />
+        </div>
+
+        <div class="form-field">
+          <label for="ciudad">Ciudad</label>
+          <input id="ciudad" type="text" formControlName="ciudad" />
+        </div>
+
+        <div class="form-field">
+          <label for="pais">País</label>
+          <input id="pais" type="text" formControlName="pais" />
+        </div>
+
+        <div class="form-field">
+          <label for="categoria">Categoría</label>
+          <input id="categoria" type="text" formControlName="categoria" />
+        </div>
+
+        <div class="form-field">
+          <label for="calificacion">Calificación</label>
+          <input
+            id="calificacion"
+            type="number"
+            step="0.01"
+            min="0"
+            max="5"
+            formControlName="calificacion"
+          />
+          <small
+    *ngIf="
+      hasError('calificacion', 'min') ||
+      hasError('calificacion', 'max')
+    "
+    class="form-error"
+  >
+    La calificación debe estar entre 0 y 5.
+  </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          *ngIf="editMode"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+  <h2>Listado de proveedores</h2>
+
+  <div *ngIf="loading">Cargando...</div>
+
+  <div class="table-scroll" *ngIf="!loading && proveedores.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>RUT</th>
+          <th>Nombre comercial</th>
+          <th>Teléfono</th>
+          <th>Correo</th>
+          <th>Ciudad</th>
+          <th>País</th>
+          <th>Categoría</th>
+          <th>Calificación</th>
+          <th>Estado</th>
+          <th class="actions-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of proveedores">
+          <td>{{ p.rut }}</td>
+          <td>{{ p.nombreComercial }}</td>
+          <td>{{ p.telefono }}</td>
+          <td>{{ p.correo }}</td>
+          <td>{{ p.ciudad }}</td>
+          <td>{{ p.pais }}</td>
+          <td>{{ p.categoria }}</td>
+          <td class="num">{{ p.calificacion }}</td>
+          <td>
+            <span
+              [class.badge-active]="p.estado"
+              [class.badge-inactive]="!p.estado"
+            >
+              {{ p.estado ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="actions-col">
+            <div class="actions">
+              <button type="button" (click)="editProveedor(p)">
+                Editar
+              </button>
+              <button
+                type="button"
+                class="danger"
+                (click)="toggleEstado(p)"
+              >
+                {{ p.estado ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p *ngIf="!loading && proveedores.length === 0">
+    No hay proveedores registrados.
+  </p>
+</section>
+
+</div>

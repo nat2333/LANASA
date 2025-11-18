@@ -1,0 +1,164 @@
+.dept-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 24px 32px;
+  color: #e5e7eb;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.18), transparent 55%),
+    #020617;
+  border-radius: 28px;
+  box-shadow: 0 26px 70px rgba(15, 23, 42, 0.9);
+}
+
+.dept-dashboard > h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: clamp(22px, 2.4vw, 28px);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #f9fafb;
+}
+
+/* Card contenedor de la tabla */
+.table-card {
+  background:
+    radial-gradient(circle at top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.96));
+  border-radius: 20px;
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.8);
+}
+
+/* Cabecera del card */
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+
+  h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #e5e7eb;
+  }
+
+  p {
+    margin: 2px 0 0;
+    font-size: 0.8rem;
+    color: #9ca3af;
+  }
+}
+
+/* Scroll horizontal si se hace muy angosto */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Tabla */
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-card thead {
+  background: linear-gradient(
+    to right,
+    rgba(15, 23, 42, 0.95),
+    rgba(30, 64, 175, 0.5)
+  );
+}
+
+.table-card thead th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #cbd5f5;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.5);
+}
+
+.table-card tbody tr {
+  transition: background-color 0.18s ease, transform 0.12s ease;
+}
+
+.table-card tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.82);
+}
+
+.table-card tbody tr:nth-child(odd) {
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.table-card tbody tr:hover {
+  background: rgba(129, 140, 248, 0.24);
+  transform: translateY(-1px);
+}
+
+.table-card tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.table-card .dept-cell {
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.table-card .num {
+  text-align: right;
+}
+
+/* Chips para diferencia y % uso */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid transparent;
+}
+
+.chip-pos {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.7);
+  color: #bbf7d0;
+}
+
+.chip-neg {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.7);
+  color: #fecaca;
+}
+
+.chip-soft {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(148, 163, 184, 0.6);
+  color: #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dept-dashboard {
+    padding: 16px 12px 20px;
+    border-radius: 0;
+  }
+
+  .table-card {
+    padding: 14px 10px 16px;
+  }
+
+  .table-card thead th,
+  .table-card tbody td {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

@@ -1,0 +1,58 @@
+<h2>Tipo Contrato</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  
+  <div class="row">
+    <label for="nombreTipocontrato">Nombre del tipo de contrato*</label>
+    <input formControlName="nombreTipocontrato" type="text"/>
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid || loading">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && tiposContrato.length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tc of tiposContrato" [class.inactive]="!tc.estado">
+        <td>{{ tc.id }}</td>
+        <td>{{ tc.nombreTipocontrato }}</td>
+        <td>
+          <span [class]="tc.estado ? 'badge-success' : 'badge-danger'">
+            {{ tc.estado ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td class="right">
+          <button (click)="edit(tc)" [disabled]="loading">
+            Editar
+          </button>
+          <button (click)="toggleEstado(tc)" [disabled]="loading">
+            {{ tc.estado ? 'Desactivar' : 'Activar' }}
+          </button>
+          <button (click)="remove(tc)" [disabled]="loading" class="btn-danger">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<div *ngIf="!loading && !tiposContrato.length" class="muted">
+    No hay tipos de contrato registrados.
+</div>

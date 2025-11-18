@@ -1,0 +1,85 @@
+<div class="prov-dashboard">
+  <h2>Estadísticas de Proveedores</h2>
+
+  <div *ngIf="loading" class="loading">Cargando…</div>
+
+  <!-- Gráficos pequeños arriba -->
+  <section class="grid charts">
+    <div class="card tiny">
+      <canvas #topCalifChart></canvas>
+    </div>
+    <div class="card tiny">
+      <canvas #puntualidadChart></canvas>
+    </div>
+  </section>
+
+  <!-- Barra de controles (solo producto) -->
+  <div class="controls-bar">
+    <div class="control">
+      <label>ID Producto</label>
+      <input type="number" [(ngModel)]="idProducto" placeholder="Ej: 1" />
+      <button (click)="buscarPorProducto()">Buscar</button>
+    </div>
+  </div>
+
+  <!-- Tablas con scroll horizontal -->
+  <section class="grid grid-full tables">
+    <div class="card table-card">
+      <h3>Mejores precios por producto</h3>
+      <div class="table-scroll">
+        <table *ngIf="mejoresPorProducto.length; else noProd">
+          <thead>
+            <tr>
+              <th>Proveedor</th><th>SKU</th><th>Producto</th>
+              <th class="num">Precio prom.</th>
+              <th class="num">Precio mín.</th>
+              <th class="num">Precio máx.</th>
+              <th class="num"># Órdenes</th>
+              <th class="num">Calif.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of mejoresPorProducto">
+              <td>{{ p.nombreComercial }}</td>
+              <td>{{ p.skuProducto }}</td>
+              <td>{{ p.nombreProducto }}</td>
+              <td class="num">{{ money(p.precioPromedioCompra) }}</td>
+              <td class="num">{{ money(p.precioMinimoCompra) }}</td>
+              <td class="num">{{ money(p.precioMaximoCompra) }}</td>
+              <td class="num">{{ p.numeroOrdenes }}</td>
+              <td class="num">{{ toNumber(p.calificacion).toFixed(1) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <ng-template #noProd><p>Ingrese un ID de producto y busque.</p></ng-template>
+      </div>
+    </div>
+
+    <div class="card table-card">
+      <h3>Relación proveedor–producto</h3>
+      <div class="table-scroll">
+        <table *ngIf="relPorProducto.length; else noRelProd">
+          <thead>
+            <tr>
+              <th>Proveedor</th><th>SKU</th><th>Producto</th>
+              <th class="num">Precio prom.</th>
+              <th class="num"># Órdenes</th>
+              <th class="num">Relación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of relPorProducto">
+              <td>{{ r.nombreComercial }}</td>
+              <td>{{ r.skuProducto }}</td>
+              <td>{{ r.nombreProducto }}</td>
+              <td class="num">{{ money(r.precioPromedioCompra) }}</td>
+              <td class="num">{{ r.numeroOrdenes }}</td>
+              <td class="num">{{ toNumber(r.relacion).toFixed(2) }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <ng-template #noRelProd><p>Ingrese un ID de producto y busque.</p></ng-template>
+      </div>
+    </div>
+  </section>
+</div>

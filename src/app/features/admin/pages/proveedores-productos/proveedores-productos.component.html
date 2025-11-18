@@ -1,0 +1,134 @@
+<div class="prov-prod-page">
+  <h1>Proveedores de productos</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar relación' : 'Nueva relación' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="idProducto">ID producto *</label>
+          <input id="idProducto" type="number" formControlName="idProducto" />
+          <small *ngIf="hasError('idProducto', 'required')" class="form-error">
+            El ID de producto es obligatorio.
+          </small>
+          <small *ngIf="hasError('idProducto', 'min')" class="form-error">
+            El ID de producto debe ser mayor o igual a 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="idProveedor">ID proveedor *</label>
+          <input
+            id="idProveedor"
+            type="number"
+            formControlName="idProveedor"
+          />
+          <small *ngIf="hasError('idProveedor', 'required')" class="form-error">
+            El ID de proveedor es obligatorio.
+          </small>
+          <small *ngIf="hasError('idProveedor', 'min')" class="form-error">
+            El ID de proveedor debe ser mayor o igual a 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="calificacion">Calificación</label>
+          <input
+            id="calificacion"
+            type="number"
+            step="0.1"
+            min="0"
+            max="5"
+            formControlName="calificacion"
+          />
+          <small
+            *ngIf="
+              hasError('calificacion', 'min') ||
+              hasError('calificacion', 'max')
+            "
+            class="form-error"
+          >
+            La calificación debe estar entre 0 y 5.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          *ngIf="editMode"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Relaciones proveedor–producto</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && relaciones.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>SKU</th>
+            <th>Producto</th>
+            <th>RUT proveedor</th>
+            <th>Proveedor</th>
+            <th>Calificación</th>
+            <th>Estado</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of relaciones">
+            <td>{{ r.idProveedorProducto }}</td>
+            <td>{{ r.skuProducto }}</td>
+            <td>{{ r.nombreProducto }}</td>
+            <td>{{ r.rutProveedor }}</td>
+            <td>{{ r.nombreComercialProveedor }}</td>
+            <td class="num">{{ r.calificacion }}</td>
+            <td>
+              <span
+                [class.badge-active]="r.estado"
+                [class.badge-inactive]="!r.estado"
+              >
+                {{ r.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="actions">
+                <button type="button" (click)="editRelacion(r)">
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="toggleEstado(r)"
+                >
+                  {{ r.estado ? 'Desactivar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && relaciones.length === 0">
+      No hay relaciones proveedor–producto registradas.
+    </p>
+  </section>
+</div>

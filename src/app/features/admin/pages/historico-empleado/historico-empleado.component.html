@@ -1,0 +1,117 @@
+<h2>Histórico de empleado</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  <div class="row">
+    <label>ID Empleado*</label>
+    <select id="idEmpleado" formControlName="idEmpleado">
+        <option value="" disabled selected>Seleccione un empleado</option>
+        <option *ngFor="let emp of empleados" [value]="emp.id">
+          {{ getNombreCompleto(emp) }}
+        </option>
+      </select>
+      <span *ngIf="form.get('idEmpleado')?.invalid && form.get('idEmpleado')?.touched" class="error-msg">
+        Debe seleccionar un empleado
+      </span>
+  </div>
+
+  <div class="row">
+    <label>ID Departamento*</label>
+     <select id="idDepartamento" formControlName="idDepartamento">
+        <option value="" disabled selected>Seleccione un departamento</option>
+        <option *ngFor="let dep of departamentos" [value]="dep.id">
+          {{ dep.nombre }}
+        </option>
+      </select>
+      <span *ngIf="form.get('idDepartamento')?.invalid && form.get('idDepartamento')?.touched" class="error-msg">
+        Debe seleccionar un departamento
+      </span>
+  </div>
+
+  <div class="row">
+    <label>ID Cargo*</label>
+     <select id="idCargo" formControlName="idCargo">
+        <option value="" disabled selected>Seleccione un cargo</option>
+        <option *ngFor="let cargo of cargos" [value]="cargo.id">
+          {{ cargo.nombreCargo }}
+        </option>
+      </select>
+      <span *ngIf="form.get('idCargo')?.invalid && form.get('idCargo')?.touched" class="error-msg">
+        Debe seleccionar un cargo
+      </span>
+  </div>
+
+  <div class="row">
+    <label>Fecha inicio*</label>
+    <input formControlName="fechaInicio" type="date" />
+  </div>
+
+  <div class="row">
+    <label>Fecha fin</label>
+    <input formControlName="fechaFin" type="date" />
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+ <table class="tbl" *ngIf="!loading && rows.length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cédula empleado</th>
+        <th>Departamento</th>
+        <th>Cargo</th>
+        <th>Fecha inicio</th>
+        <th>Fecha fin</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let h of rows" [class.inactive]="!h.estado">
+        <td>{{ h.id }}</td>
+        <td>{{ h.cedulaEmpleado }}</td>
+        <td>{{ h.nombreDepartamento }}</td>
+        <td>{{ h.nombreCargo }}</td>
+        <td>{{ h.fechaInicio | date:'yyyy-MM-dd' }}</td>
+        <td>
+          <span *ngIf="h.fechaFin; else sinFecha">
+            {{ h.fechaFin | date:'yyyy-MM-dd' }}
+          </span>
+          <ng-template #sinFecha>
+            <span class="badge-info">Actual</span>
+          </ng-template>
+        </td>
+        <td>
+          <span [class]="h.estado ? 'badge-success' : 'badge-danger'">
+            {{ h.estado ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td class="right">
+          <button (click)="edit(h)" [disabled]="loading">
+            Editar
+          </button>
+          <button (click)="toggleEstado(h)" [disabled]="loading">
+            {{ h.estado ? 'Desactivar' : 'Activar' }}
+          </button>
+          <button (click)="remove(h)" [disabled]="loading" class="btn-danger">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+<div *ngIf="!loading && !rows.length" class="muted">
+  Sin registros.
+</div>

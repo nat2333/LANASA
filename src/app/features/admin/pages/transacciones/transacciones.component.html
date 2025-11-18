@@ -1,0 +1,156 @@
+<div class="transacciones-page">
+  <h1>Transacciones</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar transacción' : 'Nueva transacción' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="idFacturaVenta">ID factura venta *</label>
+          <input
+            id="idFacturaVenta"
+            type="number"
+            formControlName="idFacturaVenta"
+          />
+          <small *ngIf="hasError('idFacturaVenta','required')" class="form-error">
+            La factura es obligatoria.
+          </small>
+          <small *ngIf="hasError('idFacturaVenta','min')" class="form-error">
+            Debe ser un ID válido mayor que 0.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="idMetodoPago">Método de pago *</label>
+          <select id="idMetodoPago" formControlName="idMetodoPago">
+            <option [ngValue]="null" disabled>Seleccione un método</option>
+            <option
+              *ngFor="let m of metodosPago"
+              [ngValue]="m.id"
+              [disabled]="!m.estado"
+            >
+              {{ m.metodoPago }}
+            </option>
+          </select>
+          <small *ngIf="hasError('idMetodoPago','required')" class="form-error">
+            El método de pago es obligatorio.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="idEstadoTransaccion">Estado transacción *</label>
+          <select id="idEstadoTransaccion" formControlName="idEstadoTransaccion">
+            <option [ngValue]="null" disabled>Seleccione un estado</option>
+            <option
+              *ngFor="let e of estadosTransaccion"
+              [ngValue]="e.id"
+              [disabled]="!e.estado"
+            >
+              {{ e.nombre }}
+            </option>
+          </select>
+          <small *ngIf="hasError('idEstadoTransaccion','required')" class="form-error">
+            El estado es obligatorio.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="valor">Valor *</label>
+          <input
+            id="valor"
+            type="number"
+            step="0.01"
+            formControlName="valor"
+          />
+          <small *ngIf="hasError('valor','min')" class="form-error">
+            El valor debe ser mayor que 0.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="fechaHora">Fecha y hora</label>
+          <input
+            id="fechaHora"
+            type="datetime-local"
+            formControlName="fechaHora"
+          />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          *ngIf="editMode"
+          type="button"
+          class="secondary"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de transacciones</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && transacciones.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>N° factura</th>
+            <th>Método pago</th>
+            <th>Estado transacción</th>
+            <th>Valor</th>
+            <th>Fecha y hora</th>
+            <th>Activo</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of transacciones">
+            <td>{{ t.idTransaccion }}</td>
+            <td>{{ t.numeroFactura }}</td>
+            <td>{{ t.metodoPago }}</td>
+            <td>{{ t.estadoTransaccion }}</td>
+            <td class="num">{{ t.valor | number:'1.2-2' }}</td>
+            <td>{{ t.fechaHora }}</td>
+            <td>
+              <span
+                [class.badge-active]="t.estado"
+                [class.badge-inactive]="!t.estado"
+              >
+                {{ t.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="actions">
+                <button type="button" (click)="editTransaccion(t)">Editar</button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="toggleEstado(t)"
+                >
+                  {{ t.estado ? 'Desactivar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && transacciones.length === 0">
+      No hay transacciones registradas.
+    </p>
+  </section>
+</div>

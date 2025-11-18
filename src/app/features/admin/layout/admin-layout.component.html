@@ -1,0 +1,114 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    Empresa
+  </div>
+
+  <!-- Inicio -->
+  <a
+    class="sidebar-link"
+    routerLink="/admin"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }">
+    Inicio
+  </a>
+
+  <!-- Empleados -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('empleados')">
+      <span>Empleados</span>
+      <span class="chevron" [class.open]="openSection === 'empleados'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'empleados'">
+      <li><a class="sidebar-link" routerLink="/admin/empleado/lista" routerLinkActive="active">Lista</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/empleado/tipo-contrato" routerLinkActive="active">Tipos de contrato</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/empleado/carga" routerLinkActive="active">Carga laboral</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/empleado/historico" routerLinkActive="active">Histórico</a></li>
+    </ul>
+  </div>
+
+  <!-- Clientes -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('clientes')">
+      <span>Clientes</span>
+      <span class="chevron" [class.open]="openSection === 'clientes'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'clientes'">
+      <li><a class="sidebar-link" routerLink="/admin/cliente/tipo" routerLinkActive="active">Tipo cliente</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/cliente/lista" routerLinkActive="active">Lista clientes</a></li>
+    </ul>
+  </div>
+
+  <!-- Departamentos -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('departamentos')">
+      <span>Departamentos</span>
+      <span class="chevron" [class.open]="openSection === 'departamentos'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'departamentos'">
+      <li><a class="sidebar-link" routerLink="/admin/departamentos" routerLinkActive="active">Lista de departamentos</a></li>
+    </ul>
+  </div>
+
+  <!-- Proyectos -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('proyectos')">
+      <span>Proyectos</span>
+      <span class="chevron" [class.open]="openSection === 'proyectos'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'proyectos'">
+      <li><a class="sidebar-link" routerLink="/admin/proyectos/lista" routerLinkActive="active">Lista de proyectos</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/proyectos/tipo" routerLinkActive="active">Tipos de proyecto</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/proyectos/rol-empleado" routerLinkActive="active">Roles de empleado</a></li>
+    </ul>
+  </div>
+
+  <!-- Inventario -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('inventario')">
+      <span>Inventario</span>
+      <span class="chevron" [class.open]="openSection === 'inventario'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'inventario'">
+      <li><a class="sidebar-link" routerLink="/admin/inventario/productos" routerLinkActive="active">Productos</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/inventario/proveedores" routerLinkActive="active">Proveedores</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/inventario/proveedores-productos" routerLinkActive="active">Proveedores de productos</a></li>
+    </ul>
+  </div>
+
+  <!-- Compras -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('compras')">
+      <span>Compras</span>
+      <span class="chevron" [class.open]="openSection === 'compras'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'compras'">
+      <li><a class="sidebar-link" routerLink="/admin/orden-compra/lista" routerLinkActive="active">Órdenes de compra</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/compras/detalle" routerLinkActive="active">Detalle de compra</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/compras/estado" routerLinkActive="active">Estado de compra</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/compras/pagos" routerLinkActive="active">Pagos</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/compras/metodos-pago" routerLinkActive="active">Métodos de pago</a></li>
+    </ul>
+  </div>
+
+  <!-- Ventas -->
+  <div class="sidebar-section">
+    <div class="sidebar-section-header" (click)="toggleSection('ventas')">
+      <span>Ventas</span>
+      <span class="chevron" [class.open]="openSection === 'ventas'">▾</span>
+    </div>
+
+    <ul class="sidebar-submenu" *ngIf="openSection === 'ventas'">
+      <li><a class="sidebar-link" routerLink="/admin/ventas/lista" routerLinkActive="active">Lista de ventas</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/ventas/detalle" routerLinkActive="active">Detalle ventas</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/ventas/transacciones" routerLinkActive="active">Transacciones</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/ventas/estados-transaccion" routerLinkActive="active">Estados de transacción</a></li>
+      <li><a class="sidebar-link" routerLink="/admin/ventas/estado-factura" routerLinkActive="active">Estado factura</a></li>
+    </ul>
+  </div>
+</nav>

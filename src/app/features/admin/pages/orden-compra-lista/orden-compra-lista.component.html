@@ -1,0 +1,119 @@
+<div class="ordenes-page">
+  <h1>Órdenes de compra</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar orden' : 'Nueva orden de compra' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label>ID proveedor *</label>
+          <input type="number" formControlName="idProveedor">
+          <small *ngIf="hasError('idProveedor','required')" class="form-error">
+            El proveedor es obligatorio.
+          </small>
+          <small *ngIf="hasError('idProveedor','min')" class="form-error">
+            El ID de proveedor debe ser mayor o igual a 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label>ID proyecto</label>
+          <input type="number" formControlName="idProyecto">
+          <small *ngIf="hasError('idProyecto','min')" class="form-error">
+            El ID de proyecto debe ser mayor o igual a 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label>Fecha orden *</label>
+          <input type="date" formControlName="fechaOrden">
+          <small *ngIf="hasError('fechaOrden','required')" class="form-error">
+            La fecha de la orden es obligatoria.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label>Fecha entrega esperada</label>
+          <input type="date" formControlName="fechaEntregaEsperada">
+        </div>
+
+        <div class="form-field">
+          <label>Fecha entrega real</label>
+          <input type="date" formControlName="fechaEntregaReal">
+        </div>
+
+        <div class="form-field">
+          <label>Estado *</label>
+          <select formControlName="idEstadoCompra">
+            <option [ngValue]="null" disabled>Seleccione un estado</option>
+            <option
+              *ngFor="let e of estadosCompra"
+              [ngValue]="e.id"
+              [disabled]="!e.estado"
+            >
+              {{ e.estadoCompra }}
+            </option>
+          </select>
+          <small *ngIf="hasError('idEstadoCompra','required')" class="form-error">
+            El estado es obligatorio.
+          </small>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button *ngIf="editMode" type="button" class="secondary" (click)="cancelEdit()">
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && ordenes.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Número</th>
+            <th>Fecha orden</th>
+            <th>Proveedor</th>
+            <th>Estado</th>
+            <th>Entrega esperada</th>
+            <th>Entrega real</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of ordenes">
+            <td>{{ o.numero }}</td>
+            <td>{{ o.fechaOrden }}</td>
+            <td>{{ o.nombreComercialProveedor }}</td>
+            <td>{{ o.nombreEstadoCompra }}</td>
+            <td>{{ o.fechaEntregaEsperada }}</td>
+            <td>{{ o.fechaEntregaReal }}</td>
+            <td class="actions-col">
+              <div class="actions">
+                <button (click)="editOrden(o)">Editar</button>
+                <button class="danger" (click)="deleteOrden(o)">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && ordenes.length === 0">No hay órdenes registradas.</p>
+  </section>
+</div>

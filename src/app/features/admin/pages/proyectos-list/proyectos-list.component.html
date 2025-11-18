@@ -1,0 +1,140 @@
+<h2>Proyectos</h2>
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  class="card"
+>
+  <div class="row">
+    <label>ID Tipo proyecto*</label>
+    <input type="number" formControlName="idTipoProyecto" />
+  </div>
+
+  <div class="row">
+    <label>ID Cliente*</label>
+    <input type="number" formControlName="idCliente" />
+  </div>
+
+  <div class="row">
+    <label>ID Departamento*</label>
+    <input type="number" formControlName="idDepartamento" />
+  </div>
+
+  <div class="row">
+    <label>Nombre*</label>
+    <input formControlName="nombre" />
+  </div>
+
+  <div class="row">
+    <label>Descripción</label>
+    <textarea formControlName="descripcion" rows="2"></textarea>
+  </div>
+
+  <div class="row">
+    <label>Fecha inicio*</label>
+    <input type="date" formControlName="fechaInicio" />
+  </div>
+
+  <div class="row">
+    <label>Fecha fin estimada</label>
+    <input type="date" formControlName="fechaFinEstimada" />
+  </div>
+
+  <div class="row">
+    <label>Fecha fin real (solo edición)</label>
+    <input type="date" formControlName="fechaFinReal" />
+  </div>
+
+  <div class="row">
+    <label>Presupuesto aprobado</label>
+    <input type="number" step="0.01" formControlName="presupuestoAprobado" />
+  </div>
+
+  <div class="row">
+    <label>Presupuesto utilizado</label>
+    <input type="number" step="0.01" formControlName="presupuestoUtilizado" />
+  </div>
+
+  <div class="row">
+    <label>Estado</label>
+    <select formControlName="estado">
+      <option [ngValue]="true">Activo</option>
+      <option [ngValue]="false">Inactivo</option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid || saving">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && proyectos.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Tipo proyecto</th>
+      <th>Departamento</th>
+      <th>Cliente</th>
+      <th>Fechas</th>
+      <th>Presupuesto</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let p of proyectos">
+      <td>{{ p.idProyecto }}</td>
+      <td>{{ p.codigo }}</td>
+      <td>
+        <a [routerLink]="['/admin/proyectos', p.idProyecto, 'info']">
+          {{ p.nombre }}
+        </a>
+      </td>
+      <td>{{ p.nombreTipoProyecto || ('#' + p.idTipoProyecto) }}</td>
+      <td>{{ p.nombreDepartamento || ('#' + p.idDepartamento) }}</td>
+      <td>{{ p.correoCliente || ('ID ' + p.idCliente) }}</td>
+
+      <td>
+        Inicio: {{ p.fechaInicio }}<br />
+        Estimada: {{ p.fechaFinEstimada || '—' }}<br />
+        Real: {{ p.fechaFinReal || '—' }}
+      </td>
+
+      <td>
+        Aprobado: {{ p.presupuestoAprobado ?? '—' }}<br />
+        Usado: {{ p.presupuestoUtilizado ?? '—' }}
+      </td>
+
+      <td>{{ p.estado ? 'Activo' : 'Inactivo' }}</td>
+
+      <td class="right">
+        <button type="button" (click)="edit(p)">
+          Editar
+        </button>
+        <button
+          type="button"
+          class="danger"
+          (click)="desactivar(p)"
+          [disabled]="deleting"
+        >
+          Desactivar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !proyectos.length" class="muted">
+  Sin registros.
+</div>

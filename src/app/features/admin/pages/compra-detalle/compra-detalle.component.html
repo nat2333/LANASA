@@ -1,0 +1,135 @@
+<div class="compra-detalle-page">
+  <h1>Detalle de compra</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar detalle' : 'Nuevo detalle de compra' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="idOrdenCompra">ID orden de compra *</label>
+          <input id="idOrdenCompra" type="number" formControlName="idOrdenCompra" />
+          <small *ngIf="hasError('idOrdenCompra', 'required')" class="form-error">
+            La orden es obligatoria.
+          </small>
+          <small *ngIf="hasError('idOrdenCompra', 'min')" class="form-error">
+            El ID de orden debe ser mayor o igual a 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="idProducto">ID producto *</label>
+          <input id="idProducto" type="number" formControlName="idProducto" />
+          <small *ngIf="hasError('idProducto', 'required')" class="form-error">
+            El producto es obligatorio.
+          </small>
+          <small *ngIf="hasError('idProducto', 'min')" class="form-error">
+            El ID de producto debe ser mayor o igual a 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="cantidad">Cantidad *</label>
+          <input id="cantidad" type="number" min="1" step="1" formControlName="cantidad" />
+          <small *ngIf="hasError('cantidad', 'required')" class="form-error">
+            La cantidad es obligatoria.
+          </small>
+          <small *ngIf="hasError('cantidad', 'min')" class="form-error">
+            La cantidad debe ser al menos 1.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="precioUnitario">Precio unitario *</label>
+          <input
+            id="precioUnitario"
+            type="number"
+            step="0.01"
+            min="0.01"
+            formControlName="precioUnitario"
+          />
+          <small *ngIf="hasError('precioUnitario', 'required')" class="form-error">
+            El precio es obligatorio.
+          </small>
+          <small *ngIf="hasError('precioUnitario', 'min')" class="form-error">
+            El precio debe ser mayor que 0.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          *ngIf="editMode"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de detalles</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <div class="table-scroll" *ngIf="!loading && detalles.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Orden</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Subtotal</th>
+            <th>Estado</th>
+            <th class="actions-col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of detalles">
+            <td>{{ d.numeroOrden }}</td>
+            <td>
+              {{ d.skuProducto }} - {{ d.nombreProducto }}
+            </td>
+            <td class="num">{{ d.cantidad }}</td>
+            <td class="num">{{ d.precioUnitario | number : '1.2-2' }}</td>
+            <td class="num">{{ d.subtotal | number : '1.2-2' }}</td>
+            <td>
+              <span
+                [class.badge-active]="d.estado"
+                [class.badge-inactive]="!d.estado"
+              >
+                {{ d.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="actions">
+                <button type="button" (click)="editDetalle(d)">Editar</button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="toggleEstado(d)"
+                >
+                  {{ d.estado ? 'Desactivar' : 'Activar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="!loading && detalles.length === 0">
+      No hay detalles de compra registrados.
+    </p>
+  </section>
+</div>

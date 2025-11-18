@@ -1,0 +1,111 @@
+<div class="admin-shell">
+<nav class="sidebar"  [class.is-collapsed]="collapsed">
+
+  <!-- DASHBOARD / INICIO -->
+  <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="item">
+    Inicio
+  </a>
+
+  <!-- EMPLEADOS -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('empleado')">
+      Empleados
+    </button>
+    <div class="sub" *ngIf="open['empleado']">
+      <a routerLink="/admin/empleado/lista" routerLinkActive="active">Lista de empleados</a>
+      <a routerLink="/admin/empleado/tipo-contrato" routerLinkActive="active">Tipo de contrato</a>
+      <a routerLink="/admin/empleado/carga" routerLinkActive="active">Carga laboral</a>
+      <a routerLink="/admin/empleado/historico" routerLinkActive="active">Histórico</a>
+    </div>
+  </div>
+
+  <!-- CLIENTES -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('cliente')">
+      Clientes
+    </button>
+    <div class="sub" *ngIf="open['cliente']">
+      <a routerLink="/admin/cliente/lista" routerLinkActive="active">Lista de clientes</a>
+      <a routerLink="/admin/cliente/tipo" routerLinkActive="active">Tipos de cliente</a>
+    </div>
+  </div>
+
+  <!-- DEPARTAMENTOS -->
+  <a routerLink="/admin/departamentos" routerLinkActive="active" class="item">
+    Departamentos
+  </a>
+
+  <!-- PROYECTOS -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('proyecto')">
+      Proyectos
+    </button>
+    <div class="sub" *ngIf="open['proyecto']">
+      <a routerLink="/admin/proyectos/lista" routerLinkActive="active">Lista de proyectos</a>
+      <a routerLink="/admin/proyectos/tipo" routerLinkActive="active">Tipos de proyecto</a>
+      <a routerLink="/admin/proyectos/rol-empleado" routerLinkActive="active">Roles de empleado</a>
+      <!-- Las rutas con :id se acceden desde la lista -->
+    </div>
+  </div>
+
+  <!-- INVENTARIO -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('inventario')">
+      Inventario
+    </button>
+    <div class="sub" *ngIf="open['inventario']">
+      <a routerLink="/admin/inventario/productos" routerLinkActive="active">Productos</a>
+      <a routerLink="/admin/inventario/proveedores" routerLinkActive="active">Proveedores</a>
+      <a routerLink="/admin/inventario/proveedores-productos" routerLinkActive="active">
+        Proveedores de productos
+      </a>
+    </div>
+  </div>
+
+  <!-- COMPRAS -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('compras')">
+      Compras
+    </button>
+    <div class="sub" *ngIf="open['compras']">
+      <a routerLink="/admin/orden-compra/lista" routerLinkActive="active">Órdenes de compra</a>
+      <a routerLink="/admin/compras/detalle" routerLinkActive="active">Detalle de compra</a>
+      <a routerLink="/admin/compras/estado" routerLinkActive="active">Estado de compra</a>
+      <a routerLink="/admin/compras/pagos" routerLinkActive="active">Pagos (compras)</a>
+      <a routerLink="/admin/compras/metodos-pago" routerLinkActive="active">Métodos de pago</a>
+      <a routerLink="/admin/factura-compra" routerLinkActive="active"> Factura Compras</a>
+    </div>
+  </div>
+
+  <!-- VENTAS -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('ventas')">
+      Ventas
+    </button>
+    <div class="sub" *ngIf="open['ventas']">
+      <a routerLink="/admin/ventas/lista" routerLinkActive="active">Lista de ventas</a>
+      <a routerLink="/admin/ventas/detalle" routerLinkActive="active">Detalle de ventas</a>
+      <a routerLink="/admin/ventas/transacciones" routerLinkActive="active">Transacciones</a>
+      <a routerLink="/admin/ventas/estados-transaccion" routerLinkActive="active">Estados de transacción</a>
+      <a routerLink="/admin/ventas/metodos-pago" routerLinkActive="active">Métodos de pago</a>
+      <a routerLink="/admin/ventas/estado-factura" routerLinkActive="active">Estado de factura</a>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="group">
+    <button type="button" class="item" (click)="toggle('estadisticas')">
+      Estadísticas
+    </button>
+    <div class="sub" *ngIf="open['estadisticas']">
+      <a routerLink="/admin/estadisticas/empleados" routerLinkActive="active">Empleados</a>
+      <a routerLink="/admin/estadisticas/departamentos" routerLinkActive="active">Departamentos</a>
+      <a routerLink="/admin/estadisticas/productos" routerLinkActive="active">Productos</a>
+      <a routerLink="/admin/estadisticas/proveedores" routerLinkActive="active">Proveedores</a>
+      <a routerLink="/admin/estadisticas/ventas" routerLinkActive="active">Ventas</a>
+      <a routerLink="/admin/estadisticas/proyectos" routerLinkActive="active">Proyectos</a>
+    </div>
+  </div>
+
+</nav>
+</div>

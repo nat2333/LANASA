@@ -1,0 +1,251 @@
+.prod-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 28px 34px;
+  color: #e5e7eb;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.22), transparent 60%),
+    #020617;
+  border-radius: 32px;
+  box-shadow: 0 32px 80px rgba(15, 23, 42, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Encabezado general */
+.prod-header {
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: clamp(22px, 2.4vw, 30px);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #f9fafb;
+  }
+
+  p {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #9ca3af;
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 32px 0 18px;
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+/* Grid principal */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 2fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Cards de charts */
+.card {
+  position: relative;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.25), transparent 65%),
+    rgba(15, 23, 42, 0.96);
+  border-radius: 20px;
+  padding: 14px 16px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+
+  &.tall {
+    min-height: 380px;
+  }
+
+  &.table-card {
+    grid-column: 1 / -1;
+  }
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.6),
+    rgba(236, 72, 153, 0.55),
+    transparent 70%
+  );
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Header de cada card */
+.card-header {
+  margin-bottom: 6px;
+
+  h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #e5e7eb;
+  }
+
+  p {
+    margin: 3px 0 0;
+    font-size: 0.78rem;
+    color: #9ca3af;
+  }
+}
+
+.card-inner {
+  margin-top: 6px;
+  height: 260px;           
+}
+
+.card canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Tabla */
+.table-card {
+  background:
+    radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
+}
+
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 6px;
+}
+
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-card thead {
+  background: linear-gradient(
+    to right,
+    rgba(15, 23, 42, 0.98),
+    rgba(129, 140, 248, 0.45)
+  );
+}
+
+.table-card thead th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.6);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #dbeafe;
+}
+
+.table-card tbody tr:nth-child(odd) {
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.table-card tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.86);
+}
+
+.table-card tbody tr:hover {
+  background: rgba(129, 140, 248, 0.22);
+  transition: background-color 0.16s ease, transform 0.1s ease;
+  transform: translateY(-1px);
+}
+
+.table-card tbody td {
+  padding: 7px 10px;
+  border-bottom: 1px dashed rgba(148, 163, 184, 0.35);
+}
+
+.sku-cell {
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.prod-name {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cat-cell {
+  font-size: 0.82rem;
+  color: #c4b5fd;
+}
+
+.num {
+  text-align: right;
+}
+
+/* Chips de utilidad / márgenes */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid transparent;
+}
+
+.chip-pos {
+  background: rgba(52, 211, 153, 0.16);
+  border-color: rgba(52, 211, 153, 0.75);
+  color: #bbf7d0;
+}
+
+.chip-neg {
+  background: rgba(248, 113, 113, 0.16);
+  border-color: rgba(248, 113, 113, 0.75);
+  color: #fecaca;
+}
+
+.chip-soft {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.7);
+  color: #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card.tall {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .prod-dashboard {
+    padding: 18px 14px 20px;
+    border-radius: 0;
+  }
+
+  .card {
+    padding: 12px 12px 14px;
+  }
+
+  .table-card thead th,
+  .table-card tbody td {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

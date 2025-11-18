@@ -1,0 +1,97 @@
+<div class="estados-transaccion-page">
+  <h1>Estados de transacción</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar estado' : 'Nuevo estado de transacción' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field full">
+          <label for="estadoTransaccion">Nombre del estado *</label>
+          <input
+            id="estadoTransaccion"
+            type="text"
+            formControlName="estadoTransaccion"
+          />
+          <small *ngIf="hasError('estadoTransaccion','required')" class="form-error">
+            El nombre es obligatorio.
+          </small>
+          <small *ngIf="hasError('estadoTransaccion','maxlength')" class="form-error">
+            Máximo 40 caracteres.
+          </small>
+        </div>
+
+        <div class="form-field inline-checkbox">
+          <label>
+            <input type="checkbox" formControlName="estado" />
+            Activo
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          *ngIf="editMode"
+          type="button"
+          class="secondary"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de estados</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <table *ngIf="!loading && estados.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Activo</th>
+          <th class="actions-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of estados">
+          <td>{{ e.id }}</td>
+          <td>{{ e.nombre }}</td>
+          <td>
+            <span
+              [class.badge-active]="e.estado"
+              [class.badge-inactive]="!e.estado"
+            >
+              {{ e.estado ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="actions-col">
+            <div class="actions">
+              <button type="button" (click)="editEstado(e)">Editar</button>
+              <button
+                type="button"
+                class="danger"
+                (click)="toggleEstado(e)"
+              >
+                {{ e.estado ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p *ngIf="!loading && estados.length === 0">
+      No hay estados de transacción registrados.
+    </p>
+  </section>
+</div>

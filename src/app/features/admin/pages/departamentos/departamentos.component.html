@@ -1,0 +1,65 @@
+<h2>Departamentos</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  <div class="row">
+    <label>Nombre*</label>
+    <input
+      formControlName="nombre"
+      placeholder="Ej: Recursos Humanos"
+    />
+  </div>
+
+  <div class="row">
+    <label>Presupuesto anual*</label>
+    <input
+      formControlName="presupuestoAnual"
+      type="number"
+      step="0.01"
+      placeholder="0.00"
+    />
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && departamentos.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Código</th>
+      <th>Fecha creación</th>
+      <th>Presupuesto anual</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let d of departamentos">
+      <td>{{ d.id }}</td>
+      <td>{{ d.nombre }}</td>
+      <td>{{ d.codigo || '—' }}</td>
+      <td>{{ d.fechaCreacion | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>{{ d.presupuestoAnual | number:'1.2-2' }}</td>
+      <td>{{ d.estado ? 'Activo' : 'Inactivo' }}</td>
+      <td class="right">
+        <button (click)="edit(d)">Editar</button>
+        <button (click)="toggleEstado(d)">{{ d.estado ? 'Desactivar' : 'Activar' }}</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !departamentos.length" class="muted">
+  Sin registros.
+</div>

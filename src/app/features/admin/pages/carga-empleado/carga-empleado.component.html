@@ -1,0 +1,63 @@
+<h2>Cargos</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  <div class="row">
+    <label>Nombre del cargo*</label>
+    <input
+      formControlName="nombreCargo"
+      placeholder="Ej: Coordinador de proyectos"
+      [readonly]="editMode"
+    />
+  </div>
+
+  <div class="row">
+    <label>Salario*</label>
+    <input
+      type="number"
+      formControlName="salario"
+      placeholder="Ej: 3500000"
+      step="0.01"
+      min="0"
+    />
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" *ngIf="editMode" (click)="cancel()">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && cargos.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Salario</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let c of cargos">
+      <td>{{ c.id }}</td>
+      <td>{{ c.nombreCargo }}</td>
+      <td>{{ c.salario | number:'1.2-2' }}</td>
+      <td>{{ c.estado ? 'Activo' : 'Inactivo' }}</td>
+      <td class="right">
+        <button (click)="edit(c)">Editar</button>
+        <button (click)="deactivate(c)">Desactivar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !cargos.length" class="muted">
+  Sin cargos registrados.
+</div>

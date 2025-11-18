@@ -1,0 +1,57 @@
+<div class="login-page">
+  <div class="bg-gradient"></div>
+
+  <div class="login-card">
+    <h1>Login</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Usuario -->
+      <div class="field">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            formControlName="username"
+            placeholder="Username"
+          />
+          <span class="icon">👤</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <div class="input-wrapper">
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+          />
+          <span class="icon">🔒</span>
+        </div>
+      </div>
+
+      <!-- Opciones -->
+      <div class="options">
+        <label class="remember">
+          <input type="checkbox" />
+          <span>Remember me</span>
+        </label>
+        <a class="link" href="#"> admin: 3214562478 </a>
+      </div>
+
+      <button
+        class="btn-login"
+        type="submit"
+        [disabled]="form.invalid || loading"
+      >
+        {{ loading ? 'Entrando...' : 'Login' }}
+      </button>
+
+      <div class="extra">
+        Olvidaste la contraseña?, llama al admin
+        
+      </div>
+
+      <div *ngIf="error" class="error">{{ error }}</div>
+    </form>
+  </div>
+</div>

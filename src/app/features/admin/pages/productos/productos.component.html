@@ -1,0 +1,176 @@
+<div class="productos-page">
+  <h1>Productos</h1>
+
+  <section class="card form-card">
+    <h2>{{ editMode ? 'Editar producto' : 'Nuevo producto' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="sku">SKU *</label>
+          <input id="sku" type="text" formControlName="sku" />
+          <small *ngIf="hasError('sku', 'required')">SKU es obligatorio.</small>
+        </div>
+
+        <div class="form-field">
+          <label for="nombre">Nombre *</label>
+          <input id="nombre" type="text" formControlName="nombre" />
+          <small *ngIf="hasError('nombre', 'required')">
+            El nombre es obligatorio.
+          </small>
+        </div>
+
+        <div class="form-field">
+          <label for="categoria">Categoría</label>
+          <input id="categoria" type="text" formControlName="categoria" />
+        </div>
+
+        <div class="form-field full">
+          <label for="descripcion">Descripción</label>
+          <textarea
+            id="descripcion"
+            rows="2"
+            formControlName="descripcion"
+          ></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="precioCompra">Precio compra *</label>
+          <input
+            id="precioCompra"
+            type="number"
+            step="0.01"
+            formControlName="precioCompra"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="precioVentaSugerido">Precio venta sugerido</label>
+          <input
+            id="precioVentaSugerido"
+            type="number"
+            step="0.01"
+            formControlName="precioVentaSugerido"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="stockMinimo">Stock mínimo</label>
+          <input
+            id="stockMinimo"
+            type="number"
+            step="1"
+            formControlName="stockMinimo"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="stockActual">Stock actual</label>
+          <input
+            id="stockActual"
+            type="number"
+            step="1"
+            formControlName="stockActual"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="stockMaximo">Stock máximo</label>
+          <input
+            id="stockMaximo"
+            type="number"
+            step="1"
+            formControlName="stockMaximo"
+          />
+        </div>
+      </div>
+
+      <div class="form-global-errors" *ngIf="form.touched && form.invalid">
+  <small *ngIf="form.errors?.['stockMaximoMenor']" class="form-error">
+    El stock máximo no puede ser menor que el stock mínimo.
+  </small>
+
+  <small *ngIf="form.errors?.['stockActualMayor']" class="form-error">
+    El stock actual no puede ser mayor que el stock máximo.
+  </small>
+
+  <small *ngIf="form.errors?.['precioVentaMenorCompra']" class="form-error">
+    El precio de venta sugerido no puede ser menor que el precio de compra.
+  </small>
+</div>
+
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading">
+          {{ editMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          *ngIf="editMode"
+          (click)="cancelEdit()"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </section>
+
+  <section class="card table-card">
+    <h2>Listado de productos</h2>
+
+    <div *ngIf="loading">Cargando...</div>
+
+    <table *ngIf="!loading && productos.length > 0">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio compra</th>
+          <th>Precio venta</th>
+          <th>Stock actual</th>
+          <th>Estado</th>
+          <th class="actions-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+  <tr *ngFor="let p of productos">
+    <td>{{ p.sku }}</td>
+    <td>{{ p.nombre }}</td>
+    <td>{{ p.categoria }}</td>
+    <td class="num">{{ p.precioCompra | number : '1.2-2' }}</td>
+    <td class="num">{{ p.precioVentaSugerido | number : '1.2-2' }}</td>
+    <td class="num">{{ p.stockActual }}</td>
+    <td>
+      <span
+        [class.badge-active]="p.estado"
+        [class.badge-inactive]="!p.estado"
+      >
+        {{ p.estado ? 'Activo' : 'Inactivo' }}
+      </span>
+    </td>
+    <td class="actions-col">
+      <div class="actions">
+        <button type="button" (click)="editProducto(p)">Editar</button>
+        <button
+          type="button"
+          class="danger"
+          (click)="toggleEstado(p)"
+        >
+          {{ p.estado ? 'Activo' : 'Inactivo' }}
+        </button>
+      </div>
+    </td>
+  </tr>
+</tbody>
+    </table>
+
+    <p *ngIf="!loading && productos.length === 0">
+      No hay productos registrados.
+    </p>
+  </section>
+</div>

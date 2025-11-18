@@ -1,0 +1,59 @@
+<h2>Tipo de Cliente</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  <div class="row">
+    <label>Tipo*</label>
+    <input formControlName="tipo" placeholder="Ej: Empresa, Persona natural" />
+  </div>
+
+  <div class="row">
+    <label>Estado</label>
+    <select formControlName="estado">
+      <option [ngValue]="true">Activo</option>
+      <option [ngValue]="false">Inactivo</option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid || saving">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table class="tbl" *ngIf="!loading && tipos.length">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tipo</th>
+      <th>Estado</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let t of tipos">
+      <td>{{ t.id }}</td>
+      <td>{{ t.tipo }}</td>
+      <td>{{ t.estado ? 'Activo' : 'Inactivo' }}</td>
+
+      <td class="right">
+        <button (click)="edit(t)">Editar</button>
+        <button class="danger" (click)="toggleEstado(t)" [disabled]="deleting">
+          {{ t.estado ? 'Desactivar' : 'Activar' }}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && !tipos.length" class="muted">
+  Sin registros.
+</div>

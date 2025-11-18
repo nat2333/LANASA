@@ -1,0 +1,225 @@
+<h2>Clientes</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="card">
+  <div class="row" *ngIf="!editMode">
+    <select id="idTipoCliente" formControlName="idTipoCliente">
+        <option value="" disabled selected>Seleccione un tipo de cliente</option>
+        <option *ngFor="let tipo of tiposCliente" [value]="tipo.id">
+          {{ tipo.tipo }}
+        </option>
+      </select>
+      <span *ngIf="form.get('idTipoCliente')?.invalid && form.get('idTipoCliente')?.touched" class="error-msg">
+        Debe seleccionar un tipo de cliente
+      </span>
+  </div>
+
+  <div class="row">
+    <label>Dirección</label>
+    <input formControlName="direccion" placeholder="Dirección" />
+  </div>
+
+  <div class="row">
+    <label>País</label>
+    <input formControlName="pais" placeholder="País" />
+  </div>
+
+  <div class="row">
+    <label>Ciudad</label>
+    <input formControlName="ciudad" placeholder="Ciudad" />
+  </div>
+
+  <div class="row">
+    <label>Teléfono*</label>
+    <input formControlName="telefono" placeholder="Teléfono" />
+  </div>
+
+  <div class="row">
+    <label>Correo*</label>
+    <input formControlName="correo" placeholder="Correo" type="email" />
+  </div>
+
+  <div *ngIf="tipoSeleccionado === 'empresa'">
+      <h3 class="section-title">Datos de la Empresa</h3>
+      
+      <div class="row">
+        <label for="razonSocial">Razón Social*</label>
+        <input 
+          id="razonSocial"
+          formControlName="razonSocial" 
+          placeholder="Razón social de la empresa"
+          maxlength="150"
+        />
+        <span *ngIf="form.get('razonSocial')?.invalid && form.get('razonSocial')?.touched" class="error-msg">
+          Razón social requerida
+        </span>
+      </div>
+
+  <div class="row">
+        <label for="nombreEmpresa">Nombre Comercial</label>
+        <input 
+          id="nombreEmpresa"
+          formControlName="nombreEmpresa" 
+          placeholder="Nombre comercial (opcional)"
+          maxlength="150"
+        />
+      </div>
+
+      <div class="row">
+        <label for="rut">RUT</label>
+        <input 
+          id="rut"
+          formControlName="rut" 
+          placeholder="Registro Único Tributario"
+          maxlength="40"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="tipoSeleccionado === 'persona natural'">
+      <h3 class="section-title">Datos de la Persona Natural</h3>
+      
+      <div class="row">
+        <label for="cedula">Cédula</label>
+        <input 
+          id="cedula"
+          formControlName="cedula" 
+          placeholder="Número de cédula"
+          maxlength="30"
+        />
+      </div>
+
+      <div class="row">
+        <label for="primerNombre">Primer Nombre*</label>
+        <input 
+          id="primerNombre"
+          formControlName="primerNombre" 
+          placeholder="Primer nombre"
+          maxlength="60"
+        />
+        <span *ngIf="form.get('primerNombre')?.invalid && form.get('primerNombre')?.touched" class="error-msg">
+          Primer nombre requerido
+        </span>
+      </div>
+
+      <div class="row">
+        <label for="segundoNombre">Segundo Nombre</label>
+        <input 
+          id="segundoNombre"
+          formControlName="segundoNombre" 
+          placeholder="Segundo nombre (opcional)"
+          maxlength="60"
+        />
+      </div>
+
+      <div class="row">
+        <label for="primerApellido">Primer Apellido*</label>
+        <input 
+          id="primerApellido"
+          formControlName="primerApellido" 
+          placeholder="Primer apellido"
+          maxlength="60"
+        />
+        <span *ngIf="form.get('primerApellido')?.invalid && form.get('primerApellido')?.touched" class="error-msg">
+          Primer apellido requerido
+        </span>
+      </div>
+
+      <div class="row">
+        <label for="segundoApellido">Segundo Apellido</label>
+        <input 
+          id="segundoApellido"
+          formControlName="segundoApellido" 
+          placeholder="Segundo apellido (opcional)"
+          maxlength="60"
+        />
+      </div>
+    </div>    
+
+  <div class="actions">
+    <button type="submit" [disabled]="form.invalid">
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" (click)="cancel()" *ngIf="editMode">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+ <div class="filter-section">
+    <h3>Lista de Clientes</h3>
+    <div class="filter-controls">
+      <label for="filtroTipo">Filtrar por tipo:</label>
+      <select 
+        id="filtroTipo" 
+        [(ngModel)]="filtroTipoCliente" 
+        (change)="onFiltroChange($any($event.target).value)"
+        class="filter-select">
+        <option value="">Todos los clientes</option>
+        <option *ngFor="let tipo of tiposCliente" [value]="tipo.id">
+          {{ tipo.tipo }}
+        </option>
+      </select>
+      <span class="result-count">
+        Mostrando {{ clientesFiltrados.length }} de {{ clientes.length }} clientes
+      </span>
+    </div>
+  </div>
+
+<table class="tbl" *ngIf="!loading && clientesFiltrados.length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Nombre/Razón Social</th>
+        <th>Documento</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Ciudad</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of clientesFiltrados" [class.inactive]="!c.estado">
+        <td>{{ c.id }}</td>
+        <td>{{ c.tipoCliente }}</td>
+        <td>
+          <strong>{{ getNombreCompleto(c) }}</strong>
+          <small *ngIf="c.nombreEmpresa && c.nombreEmpresa !== c.razonSocial" 
+                 style="display: block; color: #666;">
+            ({{ c.nombreEmpresa }})
+          </small>
+        </td>
+        <td>
+          <span *ngIf="c.cedula">Cédula: {{ c.cedula }}</span>
+          <span *ngIf="c.rut">RUT: {{ c.rut }}</span>
+          <span *ngIf="!c.cedula && !c.rut">—</span>
+        </td>
+        <td>{{ c.correo }}</td>
+        <td>{{ c.telefono }}</td>
+        <td>{{ c.ciudad || '—' }}</td>
+        <td>
+          <span [class]="c.estado ? 'badge-success' : 'badge-danger'">
+            {{ c.estado ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td class="right">
+          <button (click)="edit(c)" [disabled]="loading">Editar</button>
+          <button (click)="toggleEstado(c)" [disabled]="loading">
+            {{ c.estado ? 'Desactivar' : 'Activar' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<div *ngIf="!loading && !clientesFiltrados.length && clientes.length" class="muted">
+    No hay clientes del tipo seleccionado.
+</div>
+
+<div *ngIf="!loading && !clientes.length" class="muted">
+  Sin registros.
+</div>

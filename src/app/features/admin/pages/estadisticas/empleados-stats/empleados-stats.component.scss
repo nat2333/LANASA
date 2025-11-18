@@ -1,0 +1,122 @@
+.dashboard-container {
+  padding: 32px 32px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  color: #e5e7eb;
+  background:
+    radial-gradient(circle at top, rgba(129, 140, 248, 0.2), transparent 55%),
+    radial-gradient(circle at bottom, rgba(56, 189, 248, 0.16), transparent 60%),
+    #020617;
+  border-radius: 32px;
+  box-shadow: 0 32px 80px rgba(15, 23, 42, 0.9);
+}
+
+.dashboard-container h2 {
+  text-align: center;
+  margin-bottom: 28px;
+  color: #f9fafb;
+  font-size: clamp(22px, 2.6vw, 30px);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px 0;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+/* grid de charts */
+.charts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.chart-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.chart-card.tall {
+  min-height: 360px;
+}
+
+.chart-card {
+  position: relative;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 65%),
+    rgba(15, 23, 42, 0.96);
+  border-radius: 20px;
+  padding: 16px 18px 18px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+}
+
+/* borde brillante muy sutil */
+.chart-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.55),
+    rgba(236, 72, 153, 0.55),
+    transparent 70%
+  );
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.chart-header {
+  margin-bottom: 8px;
+
+  h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #e5e7eb;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 0.8rem;
+    color: #ebf0f9;
+  }
+}
+
+/* zona donde vive el canvas */
+.chart-inner {
+  margin-top: 6px;
+  padding: 4px 2px 0;
+  height: 260px;                /* altura base para la mayoría */
+}
+
+.chart-card canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* responsive */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 20px 16px 24px;
+    border-radius: 0; /* si quieres que a pantalla chica ocupe todo */
+  }
+
+  .chart-card {
+    padding: 14px 14px 16px;
+  }
+}

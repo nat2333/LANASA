@@ -1,0 +1,89 @@
+<div class="proyectos-depto">
+
+  <section class="card header">
+    <div class="header-top">
+      <h2>Proyectos del departamento</h2>
+      <span class="count" *ngIf="proyectos.length">
+        {{ proyectos.length }} proyecto{{ proyectos.length === 1 ? '' : 's' }}
+      </span>
+    </div>
+  </section>
+
+  <!-- Loading / error -->
+  <div *ngIf="loading" class="state state-loading">
+    Cargando proyectos…
+  </div>
+
+  <div *ngIf="!loading && error" class="state state-error">
+    {{ error }}
+  </div>
+
+  <!-- Tabla -->
+  <section class="card" *ngIf="!loading && !error">
+    <table class="proyectos-table" *ngIf="proyectos.length; else sinProyectos">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Proyecto</th>
+          <th>Presupuesto aprobado</th>
+          <th>Presupuesto utilizado</th>
+          <th>Diferencia</th>
+          <th>Estado presupuesto</th>
+          <th>Estado entrega</th>
+          <th>Días de retraso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of proyectos">
+          <td>{{ p.codigo }}</td>
+
+          <td>
+            <div class="proyecto-nombre">{{ p.nombreProyecto }}</div>
+            <div class="proyecto-depto">{{ p.nombreDepartamento }}</div>
+          </td>
+
+          <td>{{ p.presupuestoAprobado | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+          <td>{{ p.presupuestoUtilizado | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+
+          <td [ngClass]="{'negativo': p.diferenciaPresupuesto < 0}">
+            {{ p.diferenciaPresupuesto | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </td>
+
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'badge--ok':   p.estadoPresupuesto === 'EN_PRESUPUESTO',
+                'badge--warn': p.estadoPresupuesto === 'SIN_EJECUCION',
+                'badge--off':  p.estadoPresupuesto === 'SOBREPRESUPUESTO'
+              }">
+              {{ getPresupuestoLabel(p) }}
+            </span>
+          </td>
+
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'badge--ok':   p.estadoEntrega === 'A_TIEMPO',
+                'badge--warn': p.estadoEntrega === 'EN_CURSO' || p.estadoEntrega === 'SIN_FECHA_ESTIMADA',
+                'badge--off':  p.estadoEntrega === 'CON_RETRASO'
+              }">
+              {{ getEntregaLabel(p) }}
+            </span>
+          </td>
+
+          <td>
+            {{ p.diasRetraso != null ? p.diasRetraso : '—' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #sinProyectos>
+      <div class="state">
+        No hay proyectos registrados para este departamento.
+      </div>
+    </ng-template>
+  </section>
+</div>

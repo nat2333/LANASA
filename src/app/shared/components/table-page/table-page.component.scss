@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: #fefefe;
+  border-radius: 6px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.tbl th, .tbl td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.right {
+  text-align: right;
+}
+
+.muted {
+  opacity: .6;
+  margin-top: 20px;
+}

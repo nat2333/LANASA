@@ -1,0 +1,37 @@
+<div class="dashboard-container">
+  <h2>Estadísticas de empleados</h2>
+
+  <div *ngIf="loading" class="loading">
+    <p>Cargando estadísticas...</p>
+  </div>
+
+  <div class="charts-grid" *ngIf="!loading">
+    <article class="chart-card tall">
+      <header class="chart-header">
+        <h3>Top empleados por salario</h3>
+        <p>10 mejores salarios de la compañía</p>
+      </header>
+      <div class="chart-inner">
+        <canvas #topSalariosChart></canvas>
+      </div>
+    </article>
+
+    <article class="chart-card">
+      <header class="chart-header">
+        <h3>Distribución por tipo de contrato</h3>
+      </header>
+      <div class="chart-inner">
+        <canvas #distribucionContratosChart></canvas>
+      </div>
+    </article>
+
+    <article class="chart-card full-width">
+      <header class="chart-header">
+        <h3>Costos mensuales por cargo</h3>
+      </header>
+      <div class="chart-inner">
+        <canvas #costosPorCargoChart></canvas>
+      </div>
+    </article>
+  </div>
+</div>

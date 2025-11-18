@@ -1,0 +1,12 @@
+<h2>Información del proyecto</h2>
+
+<div *ngIf="loading">Cargando…</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div *ngIf="!loading && data">
+  <p><b>ID:</b> {{ data.id_proyecto }}</p>
+  <p><b>Nombre:</b> {{ data.nombre }}</p>
+  <p><b>Descripción:</b> {{ data.descripcion || '—' }}</p>
+  <p><b>Cliente:</b> {{ data.cliente?.nombre || '—' }}</p>
+  <p><b>Estado:</b> {{ data.estado === 1 ? 'Activo' : 'Inactivo' }}</p>
+</div>
